@@ -1,11 +1,16 @@
 <?php
 
 $dir = [
-    '/Traits', // load Traits for classes
-    '/Exceptions', // load throwable Exceptions classes 
-    '/', // load Base classes
-    '/Apis', // load classes for accessing the Apis
-    '/Models', // load Model defined for endpoints
+     // load Traits for classes
+    '/Traits',
+    // load throwable Exceptions classes
+    '/Exceptions',
+    // load Base classes  
+    '/', 
+    // load classes for accessing the Apis
+    '/Apis', 
+    // load Model defined for endpoints
+    '/Models', 
 ];
 
 foreach ($dir as $path) {
