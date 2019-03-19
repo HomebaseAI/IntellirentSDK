@@ -166,6 +166,7 @@ class Property extends AbstractModel
     public $property_type;
 
     public function __construct(
+        $propertyId,
         string $streetName1, 
         string $city, 
         string $state, 
@@ -176,6 +177,7 @@ class Property extends AbstractModel
         float $bathrooms,
         string $agentEmail
     ) {
+        $this->property_id = $propertyId;
         $this->street_name_1 = $streetName1;       
         $this->city = $city;
         $this->state = $state;

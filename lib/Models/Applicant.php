@@ -49,17 +49,18 @@ class Applicant extends AbstractModel
     public $phone_number;
 
     public function __construct( 
-        int $property_id, 
-        string $first_name, 
-        string $last_name, 
+        $userId,
+        int $propertyId, 
+        string $firstName, 
+        string $lastName, 
         string $email,
-        string $phone_number
+        string $phoneNumber
     ) {
-        $this->user_id = $user_id;
-        $this->property_id  = $property_id;
-        $this->first_name = $first_name;
-        $this->last_name = $last_name;
+        $this->user_id = $userId;
+        $this->property_id  = $propertyId;
+        $this->first_name = $firstName;
+        $this->last_name = $lastName;
         $this->email = $email;
-        $this->phone_number = $phone_number;    
+        $this->phone_number = $phoneNumber;    
     }
 }
