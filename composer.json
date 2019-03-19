@@ -1,0 +1,29 @@
+{
+    "name": "HomebaseAI/intellirent-sdk-php",
+    "type": "library",
+    "license": "MIT",
+    "homepage": "https://homebase.ai",
+    "authors": [
+        {
+            "name": "John Baguio",
+            "email": "johnb@fullscale.io"
+        }
+    ],
+    "require": {
+        "php": ">=5.4",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "guzzlehttp/guzzle": "^6.0",
+        "guzzlehttp/psr7": "^1.4.1"
+    },
+    "require-dev": {
+        "phing/phing": "2.*",
+        "phpunit/phpunit": "^7"
+    },
+    "autoload": {
+        "psr-4": {
+            "IntellirentSDK\\": "lib/"
+        }
+    }
+}
