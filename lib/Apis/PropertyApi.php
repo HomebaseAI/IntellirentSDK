@@ -52,7 +52,8 @@ class PropertyApi extends AbstractApi
     public function list(): array
     {
         $response = $this->call('GET');
-        return $this->collection($response, PropertyList::class);
+        // TODO: need an elegant way to returned a collection of model
+        // return $this->collection($response, PropertyList::class);
     }
 
     /**
@@ -105,7 +106,9 @@ class PropertyApi extends AbstractApi
 
         $response = $this->call('PUT', $data); 
 
-        return $this->item((object) $data, Property::class);
+        // TODO: need an elegant way to returned an updated item
+        // right now, the returned from the API contains a malformed JSON
+        // return $this->item((object) $data, Property::class);
     }
 
     /**
