@@ -165,12 +165,25 @@ class Property extends AbstractModel
      */
     public $property_type;
 
-    public function __construct(string $streetName1, string $city, string $state, string $postalCode, string $agentEmail) 
-    {
+    public function __construct(
+        string $streetName1, 
+        string $city, 
+        string $state, 
+        string $postalCode,
+        float $rate, 
+        float $securityDeposit,
+        float $bedrooms,
+        float $bathrooms,
+        string $agentEmail
+    ) {
         $this->street_name_1 = $streetName1;       
-        $this->city          = $city;
-        $this->state         = $state;
-        $this->postal_code   = $postalCode;
+        $this->city = $city;
+        $this->state = $state;
+        $this->postal_code = $postalCode;
+        $this->rate = $rate;
+        $this->security_deposit = $securityDeposit;
+        $this->bedrooms = $bedrooms;
+        $this->bathrooms = $bathrooms;
         $this->agent_email   = $agentEmail;
     }
 }

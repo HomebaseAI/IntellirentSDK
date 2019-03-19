@@ -20,7 +20,7 @@ class PropertyList extends AbstractModel
 
     public function __construct(int $id, string $address)
     {
-        $this->id      = $id;
+        $this->id = $id;
         $this->address = $address;
     }
 }
