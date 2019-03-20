@@ -27,7 +27,7 @@ Trait Result
                 
                 // loop through object properties
                 foreach ($data as $property => $value) {
-                    $this->setProperty($instance, new ReflectionProperty($instance, $property), $value);
+                    $this->setProperty($instance, $rc->getProperty($property), $value);
                 }
 
                 // pushed into array collection
@@ -57,7 +57,7 @@ Trait Result
 
             // loop through object properties
             foreach ($data as $property => $value) {
-                $this->setProperty($item, new ReflectionProperty($item, $property), $value);
+                $this->setProperty($item, $rc->getProperty($property), $value);
             }
         }
 

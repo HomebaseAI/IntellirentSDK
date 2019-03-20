@@ -52,8 +52,7 @@ class PropertyApi extends AbstractApi
     public function list(): array
     {
         $response = $this->call('GET');
-        // TODO: find an elegant way to returned a collection of model
-        // return $this->collection($response, PropertyList::class);
+        return $this->collection($response, PropertyList::class);
     }
 
     /**
@@ -73,7 +72,7 @@ class PropertyApi extends AbstractApi
      * @param Property $obj
      * @return Property
      */
-    public function create(Property $obj): Property
+    public function create(Property $obj): object
     {
         // validate if data contains the required agent_email
         if (!isset($obj->agent_email)) {
@@ -82,14 +81,19 @@ class PropertyApi extends AbstractApi
 
         $data = (array) $obj;
         
-        // we don't need the property_id data
+        // we don't need the property_id data on create
         unset($data['property_id']);
 
         $response = $this->call('POST', $data);
-        
+
+        // set the newly created property property_id
         $obj->property_id = $response->intellirent_property_id;
-        
-        return $obj;
+
+        return (object) [
+            'invite_link' => $response->property_invite_link,
+            'status' => $response->status,
+            'data' => $obj
+        ];
     }
 
     /**
@@ -99,16 +103,17 @@ class PropertyApi extends AbstractApi
      * @param array $data
      * @return Property
      */
-    public function update(int $propertyId, array $data): Property
+    public function update(int $propertyId, array $data): object
     {
         // add property_id to data
         $data['property_id'] = $propertyId;
 
         $response = $this->call('PUT', $data); 
 
-        // TODO: find an elegant way to returned an updated item
-        // right now, the returned from the API contains a malformed JSON
-        // return $this->item((object) $data, Property::class);
+        return (object) [
+            'status' => $response->status,
+            'data' => $this->item((object) $data, Property::class)
+        ];
     }
 
     /**

@@ -1,7 +1,4 @@
 <?php
-/**
- * ApiClient Class
- */
 
 namespace IntellirentSDK;
 
@@ -24,7 +21,7 @@ class ApiClient
      * @var array HTTP request headers of the HTTP request
      */
     private $headers = [
-        'Content-Type' => 'application/json'
+        'Content-Type' => 'application/json; charset=UTF-8;'
     ];
 
     /**
@@ -141,13 +138,21 @@ class ApiClient
             ]
         );
 
-        return json_decode($response->getBody());
+        $responseBody = $response->getBody();
+
+        // check for a valid json
+        // temporary fix for malformed json string
+        // will amend this code as soon as the IR API correct their response format
+        if (!$this->isValidJSON($responseBody)) {
+            $responseBody = iconv('UTF-8', 'ASCII//TRANSLIT', $responseBody);
+        }
+
+        return json_decode($responseBody);
     }
 
     /**
      * Create a HttpClient to send HTTP request to
      * 
-     * @param array $headers - optional
      * @return GuzzleHttp\Client
      */
     private function createHttpClient(): Client
