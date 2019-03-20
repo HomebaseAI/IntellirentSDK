@@ -4,6 +4,7 @@ namespace IntellirentSDK\Traits;
 
 use ReflectionClass;
 use ReflectionProperty;
+use ReflectionException;
 
 Trait Result
 {
@@ -27,7 +28,11 @@ Trait Result
                 
                 // loop through object properties
                 foreach ($data as $property => $value) {
-                    $this->setProperty($instance, $rc->getProperty($property), $value);
+                    try {
+                        $this->setProperty($instance, $rc->getProperty($property), $value);
+                    } catch (ReflectionException $e) {
+                        continue;
+                    }
                 }
 
                 // pushed into array collection
@@ -57,7 +62,11 @@ Trait Result
 
             // loop through object properties
             foreach ($data as $property => $value) {
-                $this->setProperty($item, $rc->getProperty($property), $value);
+                try {
+                    $this->setProperty($item, $rc->getProperty($property), $value);
+                } catch (ReflectionException $e) {
+                    continue;
+                }
             }
         }
 

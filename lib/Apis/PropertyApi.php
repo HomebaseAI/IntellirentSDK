@@ -8,17 +8,15 @@ use IntellirentSDK\Models\PropertyList;
 
 class PropertyApi extends AbstractApi
 {
+    /**
+     * @var $companyId
+     */
     private $companyId; 
 
-    public function __construct(ApiClient $apiClient, string $companyId)
-    {
-        parent::__construct($apiClient);
-
-        $this->setCompanyId($companyId);
-
-        // set resource path
-        $this->setResourcePath('/' . $this->getCompanyId() . '/properties/:property_id');
-    }
+    /**
+     * @var $resourcepath
+     */
+    protected $resourcePath = '/:company_id/properties/:property_id';
 
     /**
      * Set $companyId
@@ -36,9 +34,9 @@ class PropertyApi extends AbstractApi
      * Get $companyId
      * 
      * @param void
-     * @return string
+     * @return mixed
      */
-    public function getCompanyId(): string
+    public function getCompanyId()
     {
         return $this->companyId;
     }
@@ -51,7 +49,13 @@ class PropertyApi extends AbstractApi
      */
     public function list(): array
     {
-        $response = $this->call('GET');
+        $this->assertCompanyId();
+
+        $data = [
+            'company_id' => $this->getCompanyId()
+        ];
+
+        $response = $this->call('GET', $data);
         return $this->collection($response, PropertyList::class);
     }
 
@@ -74,12 +78,15 @@ class PropertyApi extends AbstractApi
      */
     public function create(Property $obj): object
     {
+        $this->assertCompanyId();
+
         // validate if data contains the required agent_email
         if (!isset($obj->agent_email)) {
             throw new \InvalidArgumentException('agent_email is not set or empty');
         }
 
         $data = (array) $obj;
+        $data['company_id'] = $this->getCompanyId();
         
         // we don't need the property_id data on create
         unset($data['property_id']);
@@ -105,8 +112,10 @@ class PropertyApi extends AbstractApi
      */
     public function update(int $propertyId, array $data): object
     {
-        // add property_id to data
+        $this->assertCompanyId();
+
         $data['property_id'] = $propertyId;
+        $data['company_id'] = $this->getCompanyId();
 
         $response = $this->call('PUT', $data); 
 
@@ -123,6 +132,8 @@ class PropertyApi extends AbstractApi
      */
     public function delete(Property $obj)
     {
+        $this->assertCompanyId();
+
         if (empty($obj->property_id)) {
             throw new \InvalidArgumentException('property_id is not set or empty.');
         }
@@ -134,11 +145,29 @@ class PropertyApi extends AbstractApi
         // this request requires AGENT_EMAIL in the request header
         $this->apiClient->addHeader('AGENT_EMAIL', $obj->agent_email);
 
-        $response = $this->call('DELETE', ['property_id' => $obj->property_id]);
+        $data = [
+            'property_id' => $obj->property_id,
+            'company_id' => $this->getCompanyId()
+        ];
+
+        $response = $this->call('DELETE', $data);
 
         // remove AGENT_EMAIL from request header
         $this->apiClient->removeHeader('AGENT_EMAIL');
 
         return $response->status;
+    }
+
+    /**
+     * Asset company_id
+     * 
+     * @param void
+     * @return void
+     */
+    private function assertCompanyId()
+    {
+        if (empty($this->getCompanyId())) {
+            throw new \InvalidArgumentException('company_id is not set or empty.');
+        }
     }
 }

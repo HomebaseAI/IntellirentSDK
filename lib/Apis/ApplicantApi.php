@@ -7,13 +7,10 @@ use IntellirentSDK\Models\Applicant;
 
 class ApplicantApi extends AbstractApi
 {
-    public function __construct(ApiClient $apiClient)
-    {
-        parent::__construct($apiClient);
-
-        // set the resource path
-        $this->setResourcePath('/applicants/:sso_hash');
-    }
+    /**
+     * @var $resourcePath
+     */
+    protected $resourcePath = '/applicants/:sso_hash';
 
     /**
      * Create a new applicant
