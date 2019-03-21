@@ -132,7 +132,7 @@ To create a new applicant, we can either provide an (associative) `array` with t
 $applicantResponse = $applicantApi->create([
     'property_id' => 1234,
     'first_name' => 'John',
-    'last_name' => 'Baguio',
+    'last_name' => 'Doe',
     'email' => 'jdoe@myintellirent.com',
     'phone_number' => '(123) 456-7890'
 ]);
