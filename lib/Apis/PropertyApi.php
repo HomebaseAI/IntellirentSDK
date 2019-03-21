@@ -73,20 +73,17 @@ class PropertyApi extends AbstractApi
      * bedrooms
      * bathrooms
      * 
-     * @param Property $obj
-     * @return Property
+     * @param array|Property $data
+     * @return object
      */
-    public function create(Property $obj): object
+    public function create($data): object
     {
         $this->assertCompanyId();
 
-        // validate if data contains the required agent_email
-        if (!isset($obj->agent_email)) {
-            throw new \InvalidArgumentException('agent_email is not set or empty');
-        }
-
-        $data = (array) $obj;
+        $data = ($data instanceof Property) ? (array) $data : $data;
         $data['company_id'] = $this->getCompanyId();
+
+        $this->assertAgentEmail($data);
         
         // we don't need the property_id data on create
         unset($data['property_id']);
@@ -94,12 +91,12 @@ class PropertyApi extends AbstractApi
         $response = $this->call('POST', $data);
 
         // set the newly created property property_id
-        $obj->property_id = $response->intellirent_property_id;
+        $data['property_id'] = $response->intellirent_property_id;
 
         return (object) [
             'invite_link' => $response->property_invite_link,
             'status' => $response->status,
-            'data' => $obj
+            'data' => $this->item((object) $data, Property::class)
         ];
     }
 
@@ -108,7 +105,7 @@ class PropertyApi extends AbstractApi
      * 
      * @param int $propertyId
      * @param array $data
-     * @return Property
+     * @return object
      */
     public function update(int $propertyId, array $data): object
     {
@@ -128,25 +125,18 @@ class PropertyApi extends AbstractApi
     /**
      * Delete a property
      * 
-     * @param Property $property
+     * @param int $propertyId
+     * @param string $agentEmail
      */
-    public function delete(Property $obj)
+    public function delete(int $propertyId, string $agentEmail)
     {
         $this->assertCompanyId();
 
-        if (empty($obj->property_id)) {
-            throw new \InvalidArgumentException('property_id is not set or empty.');
-        }
-
-        if (empty($obj->agent_email)) {
-            throw new \InvalidArgumentException('agent_email is not set or empty.');
-        }
-
         // this request requires AGENT_EMAIL in the request header
-        $this->apiClient->addHeader('AGENT_EMAIL', $obj->agent_email);
+        $this->apiClient->addHeader('AGENT_EMAIL', $agentEmail);
 
         $data = [
-            'property_id' => $obj->property_id,
+            'property_id' => $propertyId,
             'company_id' => $this->getCompanyId()
         ];
 
@@ -159,7 +149,20 @@ class PropertyApi extends AbstractApi
     }
 
     /**
-     * Asset company_id
+     * Assert agent_email
+     * 
+     * @param array $data
+     * @return void
+     */
+    private function assertAgentEmail(array $data)
+    {
+        if (!isset($data['agent_email']) || empty($data['agent_email'])) {
+            throw new \InvalidArgumentException('agent_email is not set or empty.');
+        }
+    }
+
+    /**
+     * Assert company_id
      * 
      * @param void
      * @return void

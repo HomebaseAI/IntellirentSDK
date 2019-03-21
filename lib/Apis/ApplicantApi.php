@@ -15,19 +15,25 @@ class ApplicantApi extends AbstractApi
     /**
      * Create a new applicant
      * 
-     * @param Applicant $data
-     * @return Applicant
+     * @param array|Applicant $data
+     * @return Object
      */
-    public function create(Applicant $obj): Applicant
+    public function create($data): object
     {
-        $data = (array) $obj;
+        $data = ($data instanceof Applicant) ? (array) $data : $data;
 
         // $user_id is not required on create
         unset($data['user_id']);
 
         $response = $this->call('POST', $data);
 
-        //TODO: return Applicant object with user_id set from the reponse
+        $data['user_id'] = $response[0]->USER_ID;
+
+        return (object) [
+            'session_url' => $response[0]->SESSION_URL,
+            'data' => $this->item((object) $data, Applicant::class)
+        ];
+        
     }
 
     /**
@@ -35,24 +41,28 @@ class ApplicantApi extends AbstractApi
      * 
      * @param int $userId
      * @param array $data
-     * @return Applicant
+     * @return Object
      */
-    public function update(int $userId, array $data): Applicant
+    public function update(int $userId, array $data): object
     {
         // add user_id to $data as this is required
         $data['user_id'] = $userId;
 
         $response = $this->call('POST', $data);
 
-        //TODO: return Applicant object with data of property being updated
+        return (object) [
+            'session_url' => $response[0]->SESSION_URL,
+            'data' => $this->item((object) $data, Applicant::class)
+        ];
     }
 
     /**
      * This request should contain a user_id parameter
      * 
-     * @param array|Applicant
+     * @param int $userId
+     * @param array $data
      */
-    public function signIn(array $data)
+    public function signIn(int $userId, array $data)
     {
         return $this->call('POST', $data);
     }

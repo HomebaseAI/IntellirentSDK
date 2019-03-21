@@ -16,15 +16,23 @@ class Property extends AbstractModel
      * Street address of this property (including number, street name, street suffix (e.g Drive, Blvd, etc.), apartment/unit number, etc)
      * 
      * Data Type: string
-     * @var $streetName1
+     * @var $street_name_1
      */
     public $street_name_1;
+
+    /**
+     * Street address of this property
+     * 
+     * Data Type: string
+     * @var @street_name_2
+     */
+    public $street_name_2;
 
     /**
      * Unit number of the property
      * 
      * Data Type: int
-     * @var $unitNumber
+     * @var $unit_number
      */
     public $unit_number;
 
@@ -79,7 +87,7 @@ class Property extends AbstractModel
      * Specified deposit required for this property
      * 
      * Data Type: double
-     * @var $securityDeposit
+     * @var $security_deposit
      */
     public $security_deposit;
 
@@ -87,7 +95,7 @@ class Property extends AbstractModel
      * Specified lease duration for this property
      * 
      * Data Type: string
-     * @var $leaseTerms
+     * @var $lease_terms
      */
     public $lease_terms;
 
@@ -119,7 +127,7 @@ class Property extends AbstractModel
      * Date on which property will be available
      * 
      * Data Type: string|YYYY-MM-DD
-     * @var $availableDate
+     * @var $available_date
      */
     public $available_date;
 
@@ -161,7 +169,7 @@ class Property extends AbstractModel
      * Data Type: string
      * Accepted values
      * "CONDO", "HOUSE", "TOWNHOUSE"
-     * @var $propertyType
+     * @var $property_type
      */
     public $property_type;
 
