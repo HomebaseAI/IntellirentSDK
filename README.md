@@ -32,7 +32,7 @@ $apiClient = new InterllirentSDK\ApiClient('https://syndication.irapp.co');
 ```
 
 ### List All Properties
-Now that we;ve set up our client, we can use it to make requests to the API. Let's list all properties.
+Now that we've set up our client, we can use it to make requests to the API. Let's list all properties.
 ```php
 $apiClient = new IntellirentSDK\ApiClient('https://private-anon-396a0e7408-intellirent.apiary-mock.com');
 
