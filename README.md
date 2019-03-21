@@ -1,6 +1,6 @@
 intellirent-sdk-php
 =========
-Intellirent SDK contains a set of tool that will be use by an application to interact with the [Intellirent (IR) API](https://intellirent.docs.apiary.io/)
+Intellirent SDK contains a set of tool that to interact with the [Intellirent (IR) API](https://intellirent.docs.apiary.io/)
 
 ## Version
 _TODO_
