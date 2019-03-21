@@ -30,7 +30,9 @@ class ApplicantReportApi extends AbstractApi
             'agent_details' => $this->getAgentDetailsData((array) $response->agent_details)
         ];
 
-        return $this->item($applicantReport, ApplicantCount::class);
+        return (object) [
+            'data' => $this->item($applicantReport, ApplicantCount::class)
+        ];
     }
 
     /**

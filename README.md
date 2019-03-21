@@ -184,7 +184,7 @@ $applicantReport = new IntellirentSDK\Models\ApplicantReport(
 
 $applicantCount = $applicantReportApi->applicantCounts($applicantReport);
 ```
-`$applicantCount` will be an object of type `ApplicantCount`
+`$applicantCount` will contain `data` which the `ApplicantCount` object
 
 ## Changelog
 _TODO_
