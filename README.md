@@ -1,6 +1,6 @@
 intellirent-sdk-php
 =========
-Intellirent SDK contains a set of tool that to interact with the [Intellirent (IR) API](https://intellirent.docs.apiary.io/)
+Intellirent SDK is a library that enable an application to interact with the [Intellirent (IR) API](https://intellirent.docs.apiary.io/)
 
 ## Version
 _TODO_
@@ -30,7 +30,6 @@ $apiClient = new IntellirentSDK\ApiClient('https://private-anon-396a0e7408-intel
 # For production
 $apiClient = new InterllirentSDK\ApiClient('https://syndication.irapp.co');
 ```
-
 ### List All Properties
 Now that we've set up our client, we can use it to make requests to the API. Let's list all properties.
 ```php
@@ -39,12 +38,31 @@ $apiClient = new IntellirentSDK\ApiClient('https://private-anon-396a0e7408-intel
 $propertyApi = new IntellirentSDK\Apis\PropertyApi($apiClient);
 
 # set security_token and company_id/company-name as this is required for this API
-$propertyApi->setSecurityToken('xxxxxxx')
-            ->setCompanyId('testcompany');
+$propertyApi->setSecurityToken('your-security-token')
+            ->setCompanyId('your-company-name');
 
 $properties = $propertyApi->list();
 ```
-
+##### Sample Result
+```php
+IntellirentSDK\Models\ResultFactory Object
+(
+    [meta] =>
+    [data] => Array
+        (
+            [0] => IntellirentSDK\Models\PropertyList Object
+                (
+                    [id] => 1019
+                    [address] => 870 Massachusetts Avenue 3, Boston, MA, 02318
+                )
+            [1]
+                (
+                    [id] => 1097
+                    [address] => 17 Main St, Floor 4 #11, Kansas City, MO, 648
+                )
+        )
+)
+```
 ### Create a new property
 To create a new property, we can either provide an (associative) `array` with the expected values, or a `Property` object.
 ```php
@@ -107,8 +125,39 @@ $property->pictures = ["https://up-production.s3.amazonaws.com/uploads/grid_view
 
 $propertyResponse = $propertyApi->create($property);
 ```
-`$propertyResponse` will contain the `invite_link`, `status`, and `data` which is the `Property` object with a `property_id` of the newly created property
-
+##### Sample Result
+```php
+IntellirentSDK\Models\ResultFactory Object
+(
+    [meta] => IntellirentSDK\Models\ResultMetaFactory Object
+        (
+            [invite_link] => https://intellirent.irapp.co/?afp=4F912044
+            [status] => published
+        )
+    [data] => IntellirentSDK\Models\Property Object
+        (
+            [property_id] => 1129
+            [street_name_1] => 5th Avenue
+            [street_name_2] =>
+            [unit_number] =>
+            [city] => Santa Clara
+            [state] => NY
+            [postal_code] => 12345
+            [agent_email] => jdoe@myintellirent.com
+            [rate] => 1
+            [security_deposit] => 1
+            [lease_terms] =>
+            [bedrooms] => 1
+            [utilities] =>
+            [available_date] =>
+            [description] =>
+            [amenities] =>
+            [pictures] =>
+            [parking] =>
+            [property_type] =>
+        )
+)
+```
 ### Update Property
 To update a property, we'll provide the `$property_id` and an `array` of `$data` with the property information to the method call
 ```php
@@ -117,15 +166,48 @@ $propertyResponse = $propertyApi->update(1234, [
     'parking' => 2
 ]);
 ```
-`$propertyResponse` will contain `status` of the request and `data` which is the `Property` object with the updated data. 
-
+##### Sample Result
+```php
+IntellirentSDK\Models\ResultFactory Object
+(
+    [meta] => IntellirentSDK\Models\ResultMetaFactory Object
+        (
+            [status] => updated
+        )
+    [data]
+        (
+            [property_id] => 1234
+            [street_name_1] => 5th Avenue
+            [street_name_2] =>
+            [unit_number] => 2,
+            [city] => Santa Clara
+            [state] => NY
+            [postal_code] => 12345
+            [agent_email] => jdoe@myintellirent.com
+            [rate] => 1
+            [security_deposit] => 1
+            [lease_terms] =>
+            [bedrooms] => 1
+            [bathrooms] => 1
+            [utilities] =>
+            [available_date] =>
+            [description] =>
+            [amenities] =>
+            [pictures] =>
+            [parking] => 2
+            [property_type] =>
+        )
+)
+```
 ### Archive Property
-To archive a property, we'll provide the required `$propertyId` and `$agentEmail` as arguements
-
+To archive a property, we'll provide the required `$propertyId` and `$agentEmail` as arguments
 ```php
 $propertyApi->delete(1234, 'jdoe@myintellirent.com');
 ```
-
+##### Sample Result
+```php
+Archived Successfully
+```
 ### Create a new Applicant
 To create a new applicant, we can either provide an (associative) `array` with the expected values, or an `Applicant` object.
 ```php
@@ -157,8 +239,25 @@ $applicant = new IntellirentSDK\Models\Applicant(
 
 $applicantResponse = $applicantApi->create($applicant);
 ```
-`$applicantResponse` will contain `session_url` and `data` which is the `Applicant` object with a `user_id` of the newly created applicant.
-
+##### Sample Result
+```php
+IntellirentSDK\Models\ResultFactory
+(
+    [meta] => IntellirentSDK\Models\ResultMetaFactory Object
+        (
+            [session_url] = https://syndication.irapp.co/api/v2/applicants/qwertyuiopasdfghjklzxcvbnm1234567890  
+        )
+    [data] => IntellirentSDK\Models\Applicant Object
+        (
+            [user_id] => 10212
+            [property_id] => 1234
+            [first_name] => John
+            [last_name] => Doe
+            [email] => jdoe@myintellirent.com
+            [phone_number] => (123) 456-7890
+        )
+)
+```
 ### Update existing Applicant
 To update existing applicant, we'll provide the `$userId` and and an `array` of `$data` with the applicant information to the method call
 ```php
@@ -166,8 +265,25 @@ $applicantResponse = $applicantApi->update(1234, [
     'first_name' => 'Jane'
 ]);
 ```
-`$applicantResponse` will contain
-
+##### Sample Result
+```php
+IntellirentSDK\Models\ResultFactory
+(
+    [meta] => IntellirentSDK\Models\ResultMetaFactory Object
+        (
+            [session_url] = https://syndication.irapp.co/api/v2/applicants/qwertyuiopasdfghjklzxcvbnm1234567890
+        )
+    [data]
+        (
+            [user_id] => 1234
+            [property_id] => 1234
+            [first_name] => John
+            [last_name] => Doe
+            [email] => jdoe@myintellirent.com
+            [phone_number] => (123) 456-7890
+        )
+)
+```
 ## Applicant Report
 ### Applicant Count
 In order to request for Applicant Count Report, we'll be passing object of type `ApplicantReport`
@@ -184,8 +300,25 @@ $applicantReport = new IntellirentSDK\Models\ApplicantReport(
 
 $applicantCount = $applicantReportApi->applicantCounts($applicantReport);
 ```
-`$applicantCount` will contain `data` which the `ApplicantCount` object
-
+##### Sample Result
+```php
+IntellirentSDK\Models\ResultFactory Object
+(
+    [meta] =>
+    [data] => IntellirentSDK\Models\ApplicantCount Object
+        (
+            [matched_record_count] => 1
+            [agent_details] => Array
+                (
+                    [0] => IntellirentSDK\Models\Agent Object
+                        (
+                            [id] => 387
+                            [email] => admin@myintellirent.com
+                        )
+                )
+        )
+)
+```
 ## Changelog
 _TODO_
 

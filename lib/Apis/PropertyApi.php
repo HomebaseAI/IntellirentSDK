@@ -6,7 +6,7 @@ use IntellirentSDK\ApiClient;
 use IntellirentSDK\Models\Property;
 use IntellirentSDK\Models\PropertyList;
 
-class PropertyApi extends AbstractApi
+final class PropertyApi extends AbstractApi
 {
     /**
      * @var $companyId
@@ -45,9 +45,9 @@ class PropertyApi extends AbstractApi
      * List all Properties
      * 
      * @param void
-     * @return array
+     * @return object
      */
-    public function list(): array
+    public function list(): object
     {
         $this->assertCompanyId();
 
@@ -56,7 +56,10 @@ class PropertyApi extends AbstractApi
         ];
 
         $response = $this->call('GET', $data);
-        return $this->collection($response, PropertyList::class);
+
+        return $this->result(
+            ['data' => $this->collection($response, PropertyList::class)]
+        );
     }
 
     /**
@@ -74,6 +77,7 @@ class PropertyApi extends AbstractApi
      * bathrooms
      * 
      * @param array|Property $data
+     * @throws IntellirentSDK\Exceptions\SerializationException
      * @return object
      */
     public function create($data): object
@@ -90,14 +94,17 @@ class PropertyApi extends AbstractApi
 
         $response = $this->call('POST', $data);
 
+        $this->validateResponse($response, ['intellirent_property_id']);
+
         // set the newly created property property_id
         $data['property_id'] = $response->intellirent_property_id;
 
-        return (object) [
-            'invite_link' => $response->property_invite_link,
-            'status' => $response->status,
-            'data' => $this->item((object) $data, Property::class)
-        ];
+        return $this->result(
+            ['meta' => [
+                'invite_link' => $response->property_invite_link, 
+                'status' => $response->status
+            ], 'data' => $this->item($data, Property::class)]
+        );
     }
 
     /**
@@ -105,6 +112,7 @@ class PropertyApi extends AbstractApi
      * 
      * @param int $propertyId
      * @param array $data
+     * @throws IntellirentSDK\Exceptions\SerializationException;
      * @return object
      */
     public function update(int $propertyId, array $data): object
@@ -116,10 +124,13 @@ class PropertyApi extends AbstractApi
 
         $response = $this->call('PUT', $data); 
 
-        return (object) [
-            'status' => $response->status,
-            'data' => $this->item((object) $data, Property::class)
-        ];
+        $this->validateResponse($response, ['status']);
+
+        return $this->result(
+            ['meta' => [
+                'status' => $response->status 
+            ], 'data' => $this->item($data, Property::class)]
+        );
     }
 
     /**

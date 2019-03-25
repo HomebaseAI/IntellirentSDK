@@ -5,6 +5,8 @@ namespace IntellirentSDK\Traits;
 use ReflectionClass;
 use ReflectionProperty;
 use ReflectionException;
+use IntellirentSDK\Models\ResultFactory;
+use IntellirentSDK\Models\ResultMetaFactory;
 
 Trait Result
 {
@@ -36,7 +38,7 @@ Trait Result
                 }
 
                 // pushed into array collection
-                array_push($collection, $instance);
+                $collection[] = $instance;
             }       
         }
 
@@ -46,13 +48,15 @@ Trait Result
     /**
      * Returned item result. Map $data to $class instance
      * 
-     * @param $object $data
+     * @param $data
      * @param string $className
      * @return object 
      */
-    public function item(object $data, string $className): object
+    public function item($data, string $className): object
     {
         $item = null;
+
+        $data = is_array($data) ? (object) $data : $data;
 
         if (!empty($data)) {
             $rc = new ReflectionClass($className);
@@ -71,6 +75,21 @@ Trait Result
         }
 
         return $item;
+    }
+
+    /**
+     * 
+     * @param $data
+     * @return object
+     */
+    public function result($data): object 
+    {
+        // check to see if meta is set
+        if (isset($data['meta'])) {
+            $data['meta'] = new ResultMetaFactory($data['meta']);
+        }
+
+        return $this->item($data, ResultFactory::class);
     }
 
     /**

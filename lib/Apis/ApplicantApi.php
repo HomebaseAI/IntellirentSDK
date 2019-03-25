@@ -5,7 +5,7 @@ namespace IntellirentSDK\Apis;
 use IntellirentSDK\ApiClient;
 use IntellirentSDK\Models\Applicant;
 
-class ApplicantApi extends AbstractApi
+final class ApplicantApi extends AbstractApi
 {
     /**
      * @var $resourcePath
@@ -16,6 +16,7 @@ class ApplicantApi extends AbstractApi
      * Create a new applicant
      * 
      * @param array|Applicant $data
+     * @throws IntellirentSDK\Exceptions\SerializationException;
      * @return Object
      */
     public function create($data): object
@@ -27,13 +28,15 @@ class ApplicantApi extends AbstractApi
 
         $response = $this->call('POST', $data);
 
+        $this->validateResponse($response[0], ['USER_ID']);
+
         $data['user_id'] = $response[0]->USER_ID;
 
-        return (object) [
-            'session_url' => $response[0]->SESSION_URL,
-            'data' => $this->item((object) $data, Applicant::class)
-        ];
-        
+        return $this->result(
+            ['meta' => [
+                'session_url' => $response[0]->SESSION_URL
+            ], 'data' => $this->item($data, Applicant::class)]
+        );
     }
 
     /**
@@ -41,6 +44,7 @@ class ApplicantApi extends AbstractApi
      * 
      * @param int $userId
      * @param array $data
+     * @throws IntellirentSDK\Exceptions\SerialzationException
      * @return Object
      */
     public function update(int $userId, array $data): object
@@ -50,10 +54,13 @@ class ApplicantApi extends AbstractApi
 
         $response = $this->call('POST', $data);
 
-        return (object) [
-            'session_url' => $response[0]->SESSION_URL,
-            'data' => $this->item((object) $data, Applicant::class)
-        ];
+        $this->validateResponse($response[0], ['SESSION_URL']);
+
+        return $this->result(
+            ['meta' => [
+                'session_url' => $response[0]->SESSION_URL
+            ], 'data' => $this->item($data, Applicant::class)]
+        );
     }
 
     /**

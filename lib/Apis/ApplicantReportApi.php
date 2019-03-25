@@ -6,7 +6,7 @@ use IntellirentSDK\Models\ApplicantReport;
 use IntellirentSDK\Models\Agent;
 use IntellirentSDK\Models\applicantCount;
 
-class ApplicantReportApi extends AbstractApi
+final class ApplicantReportApi extends AbstractApi
 {
     /**
      * @var $resourcePath
@@ -17,6 +17,7 @@ class ApplicantReportApi extends AbstractApi
      * Get applicants count based from ApplicantReport data
      * 
      * @param ApplicantReport $applicantReport
+     * @throws IntellirentSDK\Exceptions\SerializationException;
      */
     public function applicantCounts(ApplicantReport $applicantReport)
     {
@@ -24,15 +25,17 @@ class ApplicantReportApi extends AbstractApi
         
         $response = $this->call('POST', $data);
 
+        $this->validateResponse($response, ['matched_record_count', 'agent_details']);
+
         // applicant report data
-        $applicantReport = (object) [
+        $applicantReport = [
             'matched_record_count' => $response->matched_record_count,
             'agent_details' => $this->getAgentDetailsData((array) $response->agent_details)
         ];
 
-        return (object) [
-            'data' => $this->item($applicantReport, ApplicantCount::class)
-        ];
+        return $this->result(
+            ['data' => $this->item($applicantReport, ApplicantCount::class)]
+        );
     }
 
     /**
