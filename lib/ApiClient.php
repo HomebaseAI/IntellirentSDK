@@ -138,16 +138,7 @@ class ApiClient
             ]
         );
 
-        $responseBody = $response->getBody();
-
-        // check for a valid json
-        // temporary fix for malformed json string particularlly with smart quotes character instead of requlat quotes charcter (standard)
-        // will amend this code as soon as the IR API correct their response format
-        if (!$this->isValidJSON($responseBody)) {
-            $responseBody = iconv('UTF-8', 'ASCII//TRANSLIT', $responseBody);
-        }
-
-        return json_decode($responseBody);
+        return json_decode($response->getBody());
     }
 
     /**
