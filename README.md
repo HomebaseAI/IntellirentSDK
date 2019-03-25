@@ -1,6 +1,6 @@
 intellirent-sdk-php
 =========
-Intellirent SDK is a library that enable an application to interact with the [Intellirent (IR) API](https://intellirent.docs.apiary.io/)
+Intellirent SDK is a library written in PHP that enable an application to interact with the [Intellirent (IR) API](https://intellirent.docs.apiary.io/)
 
 ## Version
 _TODO_
