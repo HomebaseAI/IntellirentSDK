@@ -97,18 +97,6 @@ class ApiClient
     }
 
     /**
-     * Set headers for the HTTP request
-     * 
-     * @param array $headers
-     * @return $this
-     */
-    public function setHeaders(array $headers)
-    {
-        $this->headers = $headers;
-        return $this;
-    }
-
-    /**
      * Get all headers of the HTTP request
      * 
      * @param void
@@ -139,7 +127,7 @@ class ApiClient
      * 
      * @param string $method, HTTP verb (GET|POST|PATCH|PUT|DELETE)
      * @param string $resourcePath, path of the resource, e.g /api/path...
-     * @param array $query - optional, this will the query params of the HTTP request
+     * @param array $query - optional, this will be the query params of the HTTP request
      * @param array $body - optional, this will be the post body of the HTTP request
      * @throws GuzzleException
      * @return mixed
@@ -179,7 +167,7 @@ class ApiClient
 
         return new Client([
             'base_uri' => self::$BASE_URL,
-            'headers'  => $this->getHeaders()
+            'headers' => $this->getHeaders() 
         ]);
     }
 }
