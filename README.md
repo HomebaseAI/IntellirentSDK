@@ -45,22 +45,6 @@ Now that we've set up our client, we can use it to make requests to the API. Let
 $propertyApi = new IntellirentSDK\Apis\PropertyApi($apiClient);
 $properties = $propertyApi->listAllProperties();
 ```
-##### Sample Result
-```php
-Array
-(
-    [0] => IntellirentSDK\Models\PropertyList Object
-        (
-            [id] => 1019
-            [address] => 870 Massachusetts Avenue 3, Boston, MA, 02318
-        )
-    [1] => IntellirentSDK\Models\PropertyList Object
-        (
-            [id] => 1097
-            [address] => 17 Main St, Floor 4  #11, Kansas City, MO, 648
-        )
-)
-```
 ### Create a new property
 To create a new property, we can either provide an (associative) `array` with the expected values, or a `Property` object.
 ```php
@@ -123,78 +107,24 @@ $property->pictures = ["https://up-production.s3.amazonaws.com/uploads/grid_view
 
 $propertyResponse = $propertyApi->createProperty($property);
 ```
-##### Sample Result
-```php
- IntellirentSDK\Models\Property Object
-(
-    [property_id] => 1129
-    [street_name_1] => 5th Avenue
-    [street_name_2] =>
-    [unit_number] =>
-    [city] => Santa Clara
-    [state] => NY
-    [postal_code] => 12345
-    [agent_email] => jdoe@myintellirent.com
-    [rate] => 1
-    [security_deposit] => 1
-    [lease_terms] =>
-    [bedrooms] => 1
-    [utilities] =>
-    [available_date] =>
-    [description] =>
-    [amenities] =>
-    [pictures] =>
-    [parking] =>
-    [property_type] =>
-)
-```
 ### Update Property
 To update a property, we'll provide the `$property_id` and an `array` of `$data` with the property information to the method call
 ```php
-$propertyResponse = $propertyApi->updateProperty(1234, [
+$propertyApi->updateProperty(1234, [
     'unit_number' => 2,
     'parking' => 2
 ]);
-```
-##### Sample Result
-```php
-IntellirentSDK\Models\ResultFactory Object
-(
-    [property_id] => 1234
-    [street_name_1] => 5th Avenue
-    [street_name_2] =>
-    [unit_number] => 2,
-    [city] => Santa Clara
-    [state] => NY
-    [postal_code] => 12345
-    [agent_email] => jdoe@myintellirent.com
-    [rate] => 1
-    [security_deposit] => 1
-    [lease_terms] =>
-    [bedrooms] => 1
-    [bathrooms] => 1
-    [utilities] =>
-    [available_date] =>
-    [description] =>
-    [amenities] =>
-    [pictures] =>
-    [parking] => 2
-    [property_type] =>
-)
 ```
 ### Archive Property
 To archive a property, we'll provide the required `$propertyId` and `$agentEmail` as arguments
 ```php
 $propertyApi->archiveProperty(1234, 'jdoe@myintellirent.com');
 ```
-##### Sample Result
-```php
-Archived Successfully
-```
 ### Create a new Applicant
 To create a new applicant, we can either provide an (associative) `array` with the expected values, or an `Applicant` object.
 ```php
-$applicantResponse = $applicantApi->create([
+# returned ApplicantResponse model
+$applicant = $applicantApi->create([
     'property_id' => 1234,
     'first_name' => 'John',
     'last_name' => 'Doe',
@@ -211,7 +141,7 @@ $applicantResponse = $applicantApi->create([
 # $lastName
 # $email
 # $phoneNumber
-$applicant = new IntellirentSDK\Models\Applicant(
+$applicantData = new IntellirentSDK\Models\Applicant(
     0,
     1234
     'John',
@@ -220,38 +150,15 @@ $applicant = new IntellirentSDK\Models\Applicant(
     '(123) 456-7890'
 );
 
-$applicantResponse = $applicantApi->createApplicant($applicant);
-```
-##### Sample Result
-```php
-IntellirentSDK\Models\Applicant Object
-(
-    [user_id] => 10212
-    [property_id] => 1234
-    [first_name] => John
-    [last_name] => Doe
-    [email] => jdoe@myintellirent.com
-    [phone_number] => (123) 456-7890
-)
+# returned ApplicantResponse model
+$applicant = $applicantApi->createApplicant($applicantData);
 ```
 ### Update existing Applicant
 To update existing applicant, we'll provide the `$userId` and and an `array` of `$data` with the applicant information to the method call
 ```php
-$applicantResponse = $applicantApi->update(1234, [
+$applicant = $applicantApi->update(1234, [
     'first_name' => 'Jane'
 ]);
-```
-##### Sample Result
-```php
-IntellirentSDK\Models\Applicant Object
-(
-    [user_id] => 1234
-    [property_id] => 1234
-    [first_name] => John
-    [last_name] => Doe
-    [email] => jdoe@myintellirent.com
-    [phone_number] => (123) 456-7890
-)
 ```
 ## Applicant Report
 ### Applicant Count
@@ -267,22 +174,8 @@ $applicantReport = new IntellirentSDK\Models\ApplicantReport(
     ] 
 );
 
+# returned ApplicantCount model
 $applicantCount = $applicantReportApi->getApplicantCounts($applicantReport);
-```
-##### Sample Result
-```php
-IntellirentSDK\Models\ApplicantCount Object
-(
-    [matched_record_count] => 1
-    [agent_details] => Array
-        (
-            [0] => IntellirentSDK\Models\Agent Object
-                (
-                    [id] => 387
-                    [email] => admin@myintellirent.com
-                )
-        )
-)
 ```
 ## Changelog
 _TODO_

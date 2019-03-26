@@ -9,18 +9,28 @@ class PropertyList extends AbstractModel
      * 
      * @var $id
      */
-    public $id;
+    private $id;
 
     /**
      * Property Address
      * 
      * @var $address
      */
-    public $address;
+    private $address;
 
     public function __construct(int $id, string $address)
     {
         $this->id = $id;
         $this->address = $address;
+    }
+
+    /**
+     * get $id
+     * 
+     * @return int
+     */
+    public function getID()
+    {
+        return $this->id;
     }
 }
