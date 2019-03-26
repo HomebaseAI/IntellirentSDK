@@ -24,49 +24,47 @@ This API uses a `security_key`, which will be shared with any entity who wishes 
 
 ##### Creating a Client
 ```php
+# Other Credential as required by IR API
+# This is needed when using the PropertyApi
+IntellirentSDK\ApiClient::setCompanyId('your-company-id');
+
+# This is needed for all APIs request
+IntellirentSDK\ApiClient::setSecurityToken('your-security-token');
+
 # For Sandbox
-$apiClient = new IntellirentSDK\ApiClient('https://private-anon-396a0e7408-intellirent.apiary-mock.com');
+IntellirentSDK\ApiClient::setBaseUrl('https://private-anon-396a0e7408-intellirent.apiary-mock.com');
+$apiClient = new IntellirentSDK\ApiClient();
 
 # For production
-$apiClient = new InterllirentSDK\ApiClient('https://syndication.irapp.co');
+IntellirentSDK\ApiClient::setBaseUrl('https://syndication.irapp.co');
+$apiClient = new InterllirentSDK\ApiClient();
 ```
 ### List All Properties
 Now that we've set up our client, we can use it to make requests to the API. Let's list all properties.
 ```php
-$apiClient = new IntellirentSDK\ApiClient('https://private-anon-396a0e7408-intellirent.apiary-mock.com');
-
 $propertyApi = new IntellirentSDK\Apis\PropertyApi($apiClient);
-
-# set security_token and company_id/company-name as this is required for this API
-$propertyApi->setSecurityToken('your-security-token')
-            ->setCompanyId('your-company-name');
-
-$properties = $propertyApi->list();
+$properties = $propertyApi->listAllProperties();
 ```
 ##### Sample Result
 ```php
-IntellirentSDK\Models\ResultFactory Object
+Array
 (
-    [meta] =>
-    [data] => Array
+    [0] => IntellirentSDK\Models\PropertyList Object
         (
-            [0] => IntellirentSDK\Models\PropertyList Object
-                (
-                    [id] => 1019
-                    [address] => 870 Massachusetts Avenue 3, Boston, MA, 02318
-                )
-            [1]
-                (
-                    [id] => 1097
-                    [address] => 17 Main St, Floor 4 #11, Kansas City, MO, 648
-                )
+            [id] => 1019
+            [address] => 870 Massachusetts Avenue 3, Boston, MA, 02318
+        )
+    [1] => IntellirentSDK\Models\PropertyList Object
+        (
+            [id] => 1097
+            [address] => 17 Main St, Floor 4  #11, Kansas City, MO, 648
         )
 )
 ```
 ### Create a new property
 To create a new property, we can either provide an (associative) `array` with the expected values, or a `Property` object.
 ```php
-$propertyResponse = $propertyApi->create([
+$propertyResponse = $propertyApi->createProperty([
     'agent_email' => 'jdoe@myintellirent.com',
     'street_name_1' => '5th avenue',
     'street_name_2' => 'governer house',
@@ -123,45 +121,37 @@ $property->lease_terms = '6 months';
 $property->amenities = ["Hardwood floors","Elevator in building","Garden","On-site gym"];
 $property->pictures = ["https://up-production.s3.amazonaws.com/uploads/grid_view_c8313a34-1402-4350-82cc-d0d103927c0e.jpg"];
 
-$propertyResponse = $propertyApi->create($property);
+$propertyResponse = $propertyApi->createProperty($property);
 ```
 ##### Sample Result
 ```php
-IntellirentSDK\Models\ResultFactory Object
+ IntellirentSDK\Models\Property Object
 (
-    [meta] => IntellirentSDK\Models\ResultMetaFactory Object
-        (
-            [invite_link] => https://intellirent.irapp.co/?afp=4F912044
-            [status] => published
-        )
-    [data] => IntellirentSDK\Models\Property Object
-        (
-            [property_id] => 1129
-            [street_name_1] => 5th Avenue
-            [street_name_2] =>
-            [unit_number] =>
-            [city] => Santa Clara
-            [state] => NY
-            [postal_code] => 12345
-            [agent_email] => jdoe@myintellirent.com
-            [rate] => 1
-            [security_deposit] => 1
-            [lease_terms] =>
-            [bedrooms] => 1
-            [utilities] =>
-            [available_date] =>
-            [description] =>
-            [amenities] =>
-            [pictures] =>
-            [parking] =>
-            [property_type] =>
-        )
+    [property_id] => 1129
+    [street_name_1] => 5th Avenue
+    [street_name_2] =>
+    [unit_number] =>
+    [city] => Santa Clara
+    [state] => NY
+    [postal_code] => 12345
+    [agent_email] => jdoe@myintellirent.com
+    [rate] => 1
+    [security_deposit] => 1
+    [lease_terms] =>
+    [bedrooms] => 1
+    [utilities] =>
+    [available_date] =>
+    [description] =>
+    [amenities] =>
+    [pictures] =>
+    [parking] =>
+    [property_type] =>
 )
 ```
 ### Update Property
 To update a property, we'll provide the `$property_id` and an `array` of `$data` with the property information to the method call
 ```php
-$propertyResponse = $propertyApi->update(1234, [
+$propertyResponse = $propertyApi->updateProperty(1234, [
     'unit_number' => 2,
     'parking' => 2
 ]);
@@ -170,39 +160,32 @@ $propertyResponse = $propertyApi->update(1234, [
 ```php
 IntellirentSDK\Models\ResultFactory Object
 (
-    [meta] => IntellirentSDK\Models\ResultMetaFactory Object
-        (
-            [status] => updated
-        )
-    [data]
-        (
-            [property_id] => 1234
-            [street_name_1] => 5th Avenue
-            [street_name_2] =>
-            [unit_number] => 2,
-            [city] => Santa Clara
-            [state] => NY
-            [postal_code] => 12345
-            [agent_email] => jdoe@myintellirent.com
-            [rate] => 1
-            [security_deposit] => 1
-            [lease_terms] =>
-            [bedrooms] => 1
-            [bathrooms] => 1
-            [utilities] =>
-            [available_date] =>
-            [description] =>
-            [amenities] =>
-            [pictures] =>
-            [parking] => 2
-            [property_type] =>
-        )
+    [property_id] => 1234
+    [street_name_1] => 5th Avenue
+    [street_name_2] =>
+    [unit_number] => 2,
+    [city] => Santa Clara
+    [state] => NY
+    [postal_code] => 12345
+    [agent_email] => jdoe@myintellirent.com
+    [rate] => 1
+    [security_deposit] => 1
+    [lease_terms] =>
+    [bedrooms] => 1
+    [bathrooms] => 1
+    [utilities] =>
+    [available_date] =>
+    [description] =>
+    [amenities] =>
+    [pictures] =>
+    [parking] => 2
+    [property_type] =>
 )
 ```
 ### Archive Property
 To archive a property, we'll provide the required `$propertyId` and `$agentEmail` as arguments
 ```php
-$propertyApi->delete(1234, 'jdoe@myintellirent.com');
+$propertyApi->archiveProperty(1234, 'jdoe@myintellirent.com');
 ```
 ##### Sample Result
 ```php
@@ -237,25 +220,18 @@ $applicant = new IntellirentSDK\Models\Applicant(
     '(123) 456-7890'
 );
 
-$applicantResponse = $applicantApi->create($applicant);
+$applicantResponse = $applicantApi->createApplicant($applicant);
 ```
 ##### Sample Result
 ```php
-IntellirentSDK\Models\ResultFactory
+IntellirentSDK\Models\Applicant Object
 (
-    [meta] => IntellirentSDK\Models\ResultMetaFactory Object
-        (
-            [session_url] = https://syndication.irapp.co/api/v2/applicants/qwertyuiopasdfghjklzxcvbnm1234567890  
-        )
-    [data] => IntellirentSDK\Models\Applicant Object
-        (
-            [user_id] => 10212
-            [property_id] => 1234
-            [first_name] => John
-            [last_name] => Doe
-            [email] => jdoe@myintellirent.com
-            [phone_number] => (123) 456-7890
-        )
+    [user_id] => 10212
+    [property_id] => 1234
+    [first_name] => John
+    [last_name] => Doe
+    [email] => jdoe@myintellirent.com
+    [phone_number] => (123) 456-7890
 )
 ```
 ### Update existing Applicant
@@ -267,21 +243,14 @@ $applicantResponse = $applicantApi->update(1234, [
 ```
 ##### Sample Result
 ```php
-IntellirentSDK\Models\ResultFactory
+IntellirentSDK\Models\Applicant Object
 (
-    [meta] => IntellirentSDK\Models\ResultMetaFactory Object
-        (
-            [session_url] = https://syndication.irapp.co/api/v2/applicants/qwertyuiopasdfghjklzxcvbnm1234567890
-        )
-    [data]
-        (
-            [user_id] => 1234
-            [property_id] => 1234
-            [first_name] => John
-            [last_name] => Doe
-            [email] => jdoe@myintellirent.com
-            [phone_number] => (123) 456-7890
-        )
+    [user_id] => 1234
+    [property_id] => 1234
+    [first_name] => John
+    [last_name] => Doe
+    [email] => jdoe@myintellirent.com
+    [phone_number] => (123) 456-7890
 )
 ```
 ## Applicant Report
@@ -298,23 +267,19 @@ $applicantReport = new IntellirentSDK\Models\ApplicantReport(
     ] 
 );
 
-$applicantCount = $applicantReportApi->applicantCounts($applicantReport);
+$applicantCount = $applicantReportApi->getApplicantCounts($applicantReport);
 ```
 ##### Sample Result
 ```php
-IntellirentSDK\Models\ResultFactory Object
+IntellirentSDK\Models\ApplicantCount Object
 (
-    [meta] =>
-    [data] => IntellirentSDK\Models\ApplicantCount Object
+    [matched_record_count] => 1
+    [agent_details] => Array
         (
-            [matched_record_count] => 1
-            [agent_details] => Array
+            [0] => IntellirentSDK\Models\Agent Object
                 (
-                    [0] => IntellirentSDK\Models\Agent Object
-                        (
-                            [id] => 387
-                            [email] => admin@myintellirent.com
-                        )
+                    [id] => 387
+                    [email] => admin@myintellirent.com
                 )
         )
 )
