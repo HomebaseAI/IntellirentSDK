@@ -25,7 +25,7 @@ This API uses a `security_key`, which will be shared with any entity who wishes 
 ##### Creating a Client
 ```php
 # Other Credential as required by IR API
-# This is needed when using the PropertyApi
+# This is required in the PropertyApi
 IntellirentSDK\ApiClient::setCompanyId('your-company-id');
 
 # This is needed for all APIs request
