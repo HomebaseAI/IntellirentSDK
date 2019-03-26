@@ -9,21 +9,18 @@ use IntellirentSDK\Models\applicantCount;
 final class ApplicantReportApi extends AbstractApi
 {
     /**
-     * @var $resourcePath
-     */
-    protected $resourcePath = '/applicants_count';
-
-    /**
      * Get applicants count based from ApplicantReport data
      * 
      * @param ApplicantReport $applicantReport
-     * @throws IntellirentSDK\Exceptions\SerializationException;
+     * @return ApplicantCount
      */
     public function applicantCounts(ApplicantReport $applicantReport)
     {
         $data = (array) $applicantReport;
+
+        $resourcePath = '/applicants_count';
         
-        $response = $this->call('POST', $data);
+        $response = $this->apiClient->call('POST', $resourcePath, [], $data);
 
         $this->validateResponse($response, ['matched_record_count', 'agent_details']);
 
@@ -33,9 +30,7 @@ final class ApplicantReportApi extends AbstractApi
             'agent_details' => $this->getAgentDetailsData((array) $response->agent_details)
         ];
 
-        return $this->result(
-            ['data' => $this->item($applicantReport, ApplicantCount::class)]
-        );
+        return $this->item($applicantReport, ApplicantCount::class);
     }
 
     /**

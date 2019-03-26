@@ -5,8 +5,6 @@ namespace IntellirentSDK\Traits;
 use ReflectionClass;
 use ReflectionProperty;
 use ReflectionException;
-use IntellirentSDK\Models\ResultFactory;
-use IntellirentSDK\Models\ResultMetaFactory;
 
 Trait Result
 {
@@ -75,21 +73,6 @@ Trait Result
         }
 
         return $item;
-    }
-
-    /**
-     * 
-     * @param $data
-     * @return object
-     */
-    public function result($data): object 
-    {
-        // check to see if meta is set
-        if (isset($data['meta'])) {
-            $data['meta'] = new ResultMetaFactory($data['meta']);
-        }
-
-        return $this->item($data, ResultFactory::class);
     }
 
     /**

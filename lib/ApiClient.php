@@ -4,18 +4,29 @@ namespace IntellirentSDK;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
-use IntellirentSDK\Traits\Validator;
-use IntellirentSDK\Traits\Helper;
 use IntellirentSDK\Exceptions\ValidatorException;
 
 class ApiClient
 {
-    use Validator, Helper;
+    /**
+     * static @var string base url of the APIs 
+     */
+    private static $BASE_URL = 'http://localhost';
 
     /**
-     * @var string base url of the APIs 
+     * static @var string base resource path
      */
-    private $baseUrl = 'http://localhost';
+    private static $BASE_RESOURCE_PATH = '/api/v2';
+
+    /**
+     * static @var string company id of IR partner
+     */
+    private static $COMPANY_ID = null;
+
+    /**
+     * static @var string security token
+     */
+    private static $SECURITY_TOKEN = null;
 
     /**
      * @var array HTTP request headers of the HTTP request
@@ -25,41 +36,51 @@ class ApiClient
     ];
 
     /**
-     * ApiClient constructor
-     * 
-     * @param string $baseUrl - optional
-     */
-    public function __construct(string $baseUrl = null) {
-        $this->setBaseUrl($baseUrl ?: $this->getBaseUrl());
-
-        // see if we have a valid url set for the HTTP client
-        // failfast
-        if (!$this->isValidUrl($this->getBaseUrl())) {
-            throw new ValidatorException('The host url provided is\'t a valid url. ' . $this->getBaseUrl());
-        }
-    }
-
-    /**
-     * Set Api Base (Host) URL for HTTP client
+     * Set Api Base (Host) URL for calls
      * 
      * @param string $url
-     * @return $this
      */
-    public function setBaseUrl(string $baseUrl)
+    public static function setBaseUrl(string $baseUrl)
     {
-        $this->baseUrl = rtrim($baseUrl, '/');
-        return $this;
+        self::$BASE_URL = rtrim($baseUrl, '/');
     }
 
     /**
-     * Get Base URL
+     * Set API base resource path
      * 
-     * @param void
-     * @return string
+     * @param string $baseResourcePath
      */
-    public function getBaseUrl(): string
+    public static function setBaseResourcePath(string $baseResourcePath)
     {
-        return $this->baseUrl;
+        self::$BASE_RESOURCE_PATH = $baseResourcePath;
+    }
+
+    /**
+     * Set IR partner company id
+     * 
+     * @param string $companyId
+     */
+    public static function setCompanyId(string $companyId)
+    {
+        self::$COMPANY_ID = $companyId;
+    }
+
+    /**
+     * Get IR partner company id
+     */
+    public function getCompanyId()
+    {
+        return self::$COMPANY_ID;
+    }
+
+    /**
+     * Set Security Token
+     * 
+     * @param string $securityToken
+     */
+    public static function setSecurityToken(string $securityToken)
+    {
+        self::$SECURITY_TOKEN = $securityToken;
     }
 
     /**
@@ -116,22 +137,24 @@ class ApiClient
     /**
      * Send HTTP Request
      * 
-     * @param string $resourcePath, path of the resource, e.g /api/path...
      * @param string $method, HTTP verb (GET|POST|PATCH|PUT|DELETE)
+     * @param string $resourcePath, path of the resource, e.g /api/path...
      * @param array $query - optional, this will the query params of the HTTP request
      * @param array $body - optional, this will be the post body of the HTTP request
      * @throws GuzzleException
      * @return mixed
      */
-    public function call(string $resourcePath, string $method, array $query = [], array $body = [])
+    public function call(string $method, string $resourcePath, array $query = [], array $body = [])
     {
         // init HTTP client
         $client = $this->createHttpClient();
+
+        $url = self::$BASE_RESOURCE_PATH . '/' . $resourcePath;
         
         // make call
         $response = $client->request(
             $method,
-            $this->getBaseUrl() . $resourcePath,
+            $url,
             [
                 'query' => $query,
                 'json' => $body
@@ -148,8 +171,14 @@ class ApiClient
      */
     private function createHttpClient(): Client
     {
+        if (null === self::$SECURITY_TOKEN) {
+            throw new \InvalidArgumentException('Security Token is not set or empty');
+        }
+
+        $this->addHeader('SECURITY_TOKEN', self::$SECURITY_TOKEN);
+
         return new Client([
-            'base_uri' => $this->getBaseUrl(),
+            'base_uri' => self::$BASE_URL,
             'headers'  => $this->getHeaders()
         ]);
     }

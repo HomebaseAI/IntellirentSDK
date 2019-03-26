@@ -8,35 +8,27 @@ use IntellirentSDK\Models\Applicant;
 final class ApplicantApi extends AbstractApi
 {
     /**
-     * @var $resourcePath
-     */
-    protected $resourcePath = '/applicants/:sso_hash';
-
-    /**
      * Create a new applicant
      * 
      * @param array|Applicant $data
-     * @throws IntellirentSDK\Exceptions\SerializationException;
-     * @return Object
+     * @return Applicant
      */
-    public function create($data): object
+    public function create($data)
     {
         $data = ($data instanceof Applicant) ? (array) $data : $data;
 
         // $user_id is not required on create
         unset($data['user_id']);
 
-        $response = $this->call('POST', $data);
+        $resourcePath = '/applicants';
+
+        $response = $this->apiClient->call('POST', $resourcePath, [], $data);
 
         $this->validateResponse($response[0], ['USER_ID']);
 
         $data['user_id'] = $response[0]->USER_ID;
 
-        return $this->result(
-            ['meta' => [
-                'session_url' => $response[0]->SESSION_URL
-            ], 'data' => $this->item($data, Applicant::class)]
-        );
+        return $this->item($data, Applicant::class);
     }
 
     /**
@@ -44,23 +36,19 @@ final class ApplicantApi extends AbstractApi
      * 
      * @param int $userId
      * @param array $data
-     * @throws IntellirentSDK\Exceptions\SerialzationException
-     * @return Object
+     * @return Applicant
      */
-    public function update(int $userId, array $data): object
+    public function update(int $userId, array $data)
     {
-        // add user_id to $data as this is required
         $data['user_id'] = $userId;
 
-        $response = $this->call('POST', $data);
+        $resourcePath = '/applicants';
+
+        $response = $this->apiClient->call('POST', $resourcePath, [], $data);
 
         $this->validateResponse($response[0], ['SESSION_URL']);
 
-        return $this->result(
-            ['meta' => [
-                'session_url' => $response[0]->SESSION_URL
-            ], 'data' => $this->item($data, Applicant::class)]
-        );
+        return $this->item($data, Applicant::class);
     }
 
     /**
