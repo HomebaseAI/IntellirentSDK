@@ -14,7 +14,7 @@ final class ApplicantReportApi extends AbstractApi
      * @param ApplicantReport $applicantReport
      * @return ApplicantCount
      */
-    public function applicantCounts(ApplicantReport $applicantReport)
+    public function getApplicantsCount(ApplicantReport $applicantReport)
     {
         $data = (array) $applicantReport;
 
@@ -42,13 +42,14 @@ final class ApplicantReportApi extends AbstractApi
     private function getAgentDetailsData(array $data): array
     {
         $details = [];
+
         foreach ($data as $key => $value) {
             $agent = $this->item(
-                (object) ['id' => $value, 'email' => $key],
+                ['id' => $value, 'email' => $key],
                 Agent::class
             );
 
-            array_push($details, $agent);
+            $details[] = $agent;
         }
 
         return $details;

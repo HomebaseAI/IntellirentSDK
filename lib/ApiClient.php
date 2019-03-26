@@ -4,7 +4,7 @@ namespace IntellirentSDK;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
-use IntellirentSDK\Exceptions\ValidatorException;
+use IntellirentSDK\Exceptions\MissingCredentialException;
 
 class ApiClient
 {
@@ -160,7 +160,7 @@ class ApiClient
     private function createHttpClient(): Client
     {
         if (null === self::$SECURITY_TOKEN) {
-            throw new \InvalidArgumentException('Security Token is not set or empty');
+            throw new MissingCredentialException('Security Token is not set or empty');
         }
 
         $this->addHeader('SECURITY_TOKEN', self::$SECURITY_TOKEN);

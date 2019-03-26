@@ -5,6 +5,7 @@ namespace IntellirentSDK\Apis;
 use IntellirentSDK\ApiClient;
 use IntellirentSDK\Models\Property;
 use IntellirentSDK\Models\PropertyList;
+use IntellirentSDK\Exception\MissingCredentialException;
 
 final class PropertyApi extends AbstractApi
 {
@@ -14,7 +15,7 @@ final class PropertyApi extends AbstractApi
      * @param void
      * @return array
      */
-    public function list()
+    public function listAllProperties()
     {
         $this->assertCompanyId();
 
@@ -42,7 +43,7 @@ final class PropertyApi extends AbstractApi
      * @param array|Property $data
      * @return Property
      */
-    public function create($data)
+    public function createProperty($data)
     {
         $this->assertCompanyId();
 
@@ -74,7 +75,7 @@ final class PropertyApi extends AbstractApi
      * @param array $data
      * @return Property
      */
-    public function update(int $propertyId, array $data)
+    public function updateProperty(int $propertyId, array $data)
     {
         $this->assertCompanyId();
 
@@ -95,7 +96,7 @@ final class PropertyApi extends AbstractApi
      * @param int $propertyId
      * @param string $agentEmail
      */
-    public function archive(int $propertyId, string $agentEmail)
+    public function archiveProperty(int $propertyId, string $agentEmail)
     {
         $this->assertCompanyId();
 
@@ -134,7 +135,7 @@ final class PropertyApi extends AbstractApi
     private function assertCompanyId()
     {
         if (null === $this->apiClient->getCompanyId()) {
-            throw new \InvalidArgumentException('Company id is not set or empty.');
+            throw new MissingCredentialException('Company id is not set or empty.');
         }
     }
 }

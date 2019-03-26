@@ -13,7 +13,7 @@ final class ApplicantApi extends AbstractApi
      * @param array|Applicant $data
      * @return Applicant
      */
-    public function create($data)
+    public function createApplicant($data)
     {
         $data = ($data instanceof Applicant) ? (array) $data : $data;
 
@@ -38,7 +38,7 @@ final class ApplicantApi extends AbstractApi
      * @param array $data
      * @return Applicant
      */
-    public function update(int $userId, array $data)
+    public function updateApplicant(int $userId, array $data)
     {
         $data['user_id'] = $userId;
 
