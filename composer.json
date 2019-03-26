@@ -1,8 +1,15 @@
 {
-    "name": "HomebaseAI/intellirent-sdk-php",
+    "name": "homebaseai/intellirent-sdk-php",
     "type": "library",
+    "version": "dev-master",
     "license": "MIT",
     "homepage": "https://homebase.ai",
+    "keywords": [
+        "intellirent",
+        "php",
+        "sdk",
+        "api"
+    ],
     "authors": [
         {
             "name": "John Baguio",
@@ -10,13 +17,12 @@
         }
     ],
     "require": {
-        "php": ">=5.4",
+        "php": ">=5.4.0",
         "ext-curl": "*",
         "ext-json": "*",
         "ext-mbstring": "*",
         "guzzlehttp/guzzle": "^6.0",
-        "guzzlehttp/psr7": "^1.4.1",
-        "nesbot/carbon": "1.36.1"
+        "guzzlehttp/psr7": "^1.4.1"
     },
     "require-dev": {
         "phing/phing": "2.*",
