@@ -30,7 +30,9 @@ final class ApplicantReportApi extends AbstractApi
             'agent_details' => $this->getAgentDetailsData((array) $response->agent_details)
         ];
 
-        return $this->item($applicantReport, ApplicantCount::class);
+        $agentDetails = $this->getAgentDetailsData((array) $response->agent_details);
+
+        return new ApplicantCount($response->matched_record_count, $agentDetails);
     }
 
     /**
@@ -43,12 +45,8 @@ final class ApplicantReportApi extends AbstractApi
     {
         $details = [];
 
-        foreach ($data as $key => $value) {
-            $agent = $this->item(
-                ['id' => $value, 'email' => $key],
-                Agent::class
-            );
-
+        foreach ($data as $email => $id) {
+            $agent = new Agent((int) $id, $email);
             $details[] = $agent;
         }
 

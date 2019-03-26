@@ -4,6 +4,7 @@ namespace IntellirentSDK\Apis;
 
 use IntellirentSDK\ApiClient;
 use IntellirentSDK\Models\Applicant;
+use IntellirentSDK\Models\ApplicantResponse;
 
 final class ApplicantApi extends AbstractApi
 {
@@ -24,11 +25,12 @@ final class ApplicantApi extends AbstractApi
 
         $response = $this->apiClient->call('POST', $resourcePath, [], $data);
 
-        $this->validateResponse($response[0], ['USER_ID']);
+        $this->validateResponse($response[0], ['USER_ID', 'SESSION_URL']);
 
-        $data['user_id'] = $response[0]->USER_ID;
-
-        return $this->item($data, Applicant::class);
+        return new ApplicantResponse(
+            $response[0]->USER_ID,
+            $response[0]->SESSION_URL   
+        );
     }
 
     /**
@@ -46,9 +48,12 @@ final class ApplicantApi extends AbstractApi
 
         $response = $this->apiClient->call('POST', $resourcePath, [], $data);
 
-        $this->validateResponse($response[0], ['SESSION_URL']);
+        $this->validateResponse($response[0], ['USER_ID', 'SESSION_URL']);
 
-        return $this->item($data, Applicant::class);
+        return new ApplicantResponse(
+            $response[0]->USER_ID,
+            $response[0]->SESSION_URL
+        );
     }
 
     /**

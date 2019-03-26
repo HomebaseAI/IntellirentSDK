@@ -3,14 +3,11 @@
 namespace IntellirentSDK\Apis;
 
 use IntellirentSDK\ApiClient;
-use IntellirentSDK\Traits\Result;
-use IntellirentSDK\Traits\Validator;
 use IntellirentSDK\Traits\Response;
-use IntellirentSDK\Exceptions\ValidatorException;
 
 abstract class AbstractApi
 {
-    use Validator, Result, Response;
+    use Response;
 
     /**
      * @var $apiClient

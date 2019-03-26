@@ -5,6 +5,7 @@ namespace IntellirentSDK\Apis;
 use IntellirentSDK\ApiClient;
 use IntellirentSDK\Models\Property;
 use IntellirentSDK\Models\PropertyList;
+use IntellirentSDK\Models\NewPropertyResponse;
 use IntellirentSDK\Exception\MissingCredentialException;
 
 final class PropertyApi extends AbstractApi
@@ -23,7 +24,13 @@ final class PropertyApi extends AbstractApi
 
         $response = $this->apiClient->call('GET', $resourcePath);
 
-        return $this->collection($response, PropertyList::class);
+        $properties = [];
+
+        foreach ($response as $property) {
+            $properties[] = new PropertyList($property->id, $property->address);
+        }
+
+        return $properties;
     }
 
     /**
@@ -60,12 +67,13 @@ final class PropertyApi extends AbstractApi
 
         $response = $this->apiClient->call('POST', $resourcePath, [], $data);
 
-        $this->validateResponse($response, ['intellirent_property_id']);
-
-        // set the newly created property property_id
-        $data['property_id'] = $response->intellirent_property_id;
-
-        return $this->item($data, Property::class);
+        $this->validateResponse($response, ['intellirent_property_id', 'property_invite_link', 'status']);
+     
+        return new NewPropertyResponse(
+            $response->intellirent_property_id, 
+            $response->property_invite_link, 
+            $response->status
+        );
     }
 
     /**
@@ -85,9 +93,7 @@ final class PropertyApi extends AbstractApi
 
         $this->validateResponse($response, ['status']);
 
-        $data['property_id'] = $propertyId;
-
-        return $this->item($data, Property::class);
+        return $response->status;
     }
 
     /**
