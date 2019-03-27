@@ -108,7 +108,7 @@ $property->pictures = ["https://up-production.s3.amazonaws.com/uploads/grid_view
 
 $propertyResponse = $propertyApi->createProperty($property);
 ```
-`$propertyResponse` will contain an instance of `IntellirentSDK\Models\NewPropertyResponse` with  `id` for the newly created property, `invite_link` url, and `status` properties
+`$propertyResponse` will contain an instance of `IntellirentSDK\Models\NewPropertyResponse` with  `id` of the newly created property, `invite_link` url, and `status`
 ### Update Property
 To update a property, we'll provide the `$property_id` and an `array` of `$data` with the property information to the method call
 ```php
@@ -155,7 +155,7 @@ $applicantData = new IntellirentSDK\Models\Applicant(
 
 $applicant = $applicantApi->createApplicant($applicantData);
 ```
-`$applicant` will contain an instance of `IntellirentSDK\Models\ApplicantResponse` with `id` for the newly created applicant and the `session_url` properties
+`$applicant` will contain an instance of `IntellirentSDK\Models\ApplicantResponse` with `id` of the newly created applicant and the `session_url`
 ### Update existing Applicant
 To update existing applicant, we'll provide the `$userId` and and an `array` of `$data` with the applicant information to the method call
 ```php
@@ -163,7 +163,7 @@ $applicant = $applicantApi->update(1234, [
     'first_name' => 'Jane'
 ]);
 ```
-`$applicant` will contain an instance of `IntellirentSDK\Models\ApplicantResponse` with `id` and `session_url` properties
+`$applicant` will contain an instance of `IntellirentSDK\Models\ApplicantResponse` with `id` of the applicant and `session_url`
 ## Applicant Report
 ### Applicant Count
 In order to request for Applicant Count Report, we'll be passing object of type `ApplicantReport`
