@@ -33,4 +33,14 @@ class PropertyList extends AbstractModel
     {
         return $this->id;
     }
+
+    /**
+     * get $address
+     * 
+     * @return string
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
 }
