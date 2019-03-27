@@ -31,7 +31,7 @@ IntellirentSDK\ApiClient::setCompanyId('your-company-id');
 # This is needed for all APIs request
 IntellirentSDK\ApiClient::setSecurityToken('your-security-token');
 
-# For Sandbox
+# For Mock Server
 IntellirentSDK\ApiClient::setBaseUrl('https://private-anon-396a0e7408-intellirent.apiary-mock.com');
 $apiClient = new IntellirentSDK\ApiClient();
 
@@ -45,6 +45,7 @@ Now that we've set up our client, we can use it to make requests to the API. Let
 $propertyApi = new IntellirentSDK\Apis\PropertyApi($apiClient);
 $properties = $propertyApi->listAllProperties();
 ```
+`$properties` will contain an array of `Intellirent\Models\PropertyList` object
 ### Create a new property
 To create a new property, we can either provide an (associative) `array` with the expected values, or a `Property` object.
 ```php
@@ -107,6 +108,7 @@ $property->pictures = ["https://up-production.s3.amazonaws.com/uploads/grid_view
 
 $propertyResponse = $propertyApi->createProperty($property);
 ```
+`$propertyResponse` will contain an instance of `IntellirentSDK\Models\NewPropertyResponse` with  `id` for the newly created property, `invite_link` url, and `status` properties
 ### Update Property
 To update a property, we'll provide the `$property_id` and an `array` of `$data` with the property information to the method call
 ```php
@@ -115,15 +117,16 @@ $propertyApi->updateProperty(1234, [
     'parking' => 2
 ]);
 ```
+On successful update will output the response status
 ### Archive Property
 To archive a property, we'll provide the required `$propertyId` and `$agentEmail` as arguments
 ```php
 $propertyApi->archiveProperty(1234, 'jdoe@myintellirent.com');
 ```
+On successful archive will output the request status
 ### Create a new Applicant
 To create a new applicant, we can either provide an (associative) `array` with the expected values, or an `Applicant` object.
 ```php
-# returned ApplicantResponse model
 $applicant = $applicantApi->create([
     'property_id' => 1234,
     'first_name' => 'John',
@@ -150,9 +153,9 @@ $applicantData = new IntellirentSDK\Models\Applicant(
     '(123) 456-7890'
 );
 
-# returned ApplicantResponse model
 $applicant = $applicantApi->createApplicant($applicantData);
 ```
+`$applicant` will contain an instance of `IntellirentSDK\Models\ApplicantResponse` with `id` for the newly created applicant and the `session_url` properties
 ### Update existing Applicant
 To update existing applicant, we'll provide the `$userId` and and an `array` of `$data` with the applicant information to the method call
 ```php
@@ -160,6 +163,7 @@ $applicant = $applicantApi->update(1234, [
     'first_name' => 'Jane'
 ]);
 ```
+`$applicant` will contain an instance of `IntellirentSDK\Models\ApplicantResponse` with `id` and `session_url` properties
 ## Applicant Report
 ### Applicant Count
 In order to request for Applicant Count Report, we'll be passing object of type `ApplicantReport`
@@ -174,9 +178,9 @@ $applicantReport = new IntellirentSDK\Models\ApplicantReport(
     ] 
 );
 
-# returned ApplicantCount model
 $applicantCount = $applicantReportApi->getApplicantCounts($applicantReport);
 ```
+`$applicantCount` will contain an instance of `IntellirentSDK\Models\ApplicantCount` with `matched_record_count` and `agent_details` properties
 ## Changelog
 _TODO_
 
