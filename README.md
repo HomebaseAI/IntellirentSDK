@@ -33,7 +33,9 @@ IntellirentSDK\Configuration::setSecurityToken('your-security-token');
 
 # For Mock Server
 IntellirentSDK\Configuration::setBaseUrl('https://private-anon-396a0e7408-intellirent.apiary-mock.com');
-$apiClient = new IntellirentSDK\ApiClient();
+
+$configuration = new IntellirentSDK\Configuration();
+$apiClient = new IntellirentSDK\ApiClient($configuration);
 
 # For production
 IntellirentSDK\Configuration::setBaseUrl('https://syndication.irapp.co');
