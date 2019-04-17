@@ -20,7 +20,7 @@ final class PropertyApi extends AbstractApi
     {
         $this->assertCompanyId();
 
-        $resourcePath = $this->apiClient::getCompanyId() . '/properties';
+        $resourcePath = $this->apiClient->getConfiguration()->getCompanyId() . '/properties';
 
         $response = $this->apiClient->call('GET', $resourcePath);
 
@@ -63,7 +63,7 @@ final class PropertyApi extends AbstractApi
         // we don't need the property_id data on create
         unset($data['property_id']);
 
-        $resourcePath = $this->apiClient->getCompanyId() . '/properties';
+        $resourcePath = $this->apiClient->getConfiguration()->getCompanyId() . '/properties';
 
         $response = $this->apiClient->call('POST', $resourcePath, [], $data);
 
@@ -87,7 +87,7 @@ final class PropertyApi extends AbstractApi
     {
         $this->assertCompanyId();
 
-        $resourcePath = $this->apiClient->getCompanyId() . '/properties/' . $propertyId;
+        $resourcePath = $this->apiClient->getConfiguration()->getCompanyId() . '/properties/' . $propertyId;
 
         $response = $this->apiClient->call('PUT', $resourcePath, [], $data); 
 
@@ -109,7 +109,7 @@ final class PropertyApi extends AbstractApi
         // this request requires AGENT_EMAIL in the request header
         $this->apiClient->addHeader('AGENT_EMAIL', $agentEmail);
 
-        $resourcePath = $this->apiClient->getCompanyId() . '/properties/' . $propertyId;
+        $resourcePath = $this->apiClient->getConfiguration()->getCompanyId() . '/properties/' . $propertyId;
 
         $response = $this->apiClient->call('DELETE', $resourcePath);
 
@@ -140,7 +140,7 @@ final class PropertyApi extends AbstractApi
      */
     private function assertCompanyId()
     {
-        if (null === $this->apiClient->getCompanyId()) {
+        if (null === $this->apiClient->getConfiguration()->getCompanyId()) {
             throw new MissingCredentialException('Company id is not set or empty.');
         }
     }

@@ -26,17 +26,17 @@ This API uses a `security_key`, which will be shared with any entity who wishes 
 ```php
 # Other Credential as required by IR API
 # This is required in the PropertyApi
-IntellirentSDK\ApiClient::setCompanyId('your-company-id');
+IntellirentSDK\Configuration::setCompanyId('your-company-id');
 
 # This is needed for all APIs request
-IntellirentSDK\ApiClient::setSecurityToken('your-security-token');
+IntellirentSDK\Configuration::setSecurityToken('your-security-token');
 
 # For Mock Server
-IntellirentSDK\ApiClient::setBaseUrl('https://private-anon-396a0e7408-intellirent.apiary-mock.com');
+IntellirentSDK\Configuration::setBaseUrl('https://private-anon-396a0e7408-intellirent.apiary-mock.com');
 $apiClient = new IntellirentSDK\ApiClient();
 
 # For production
-IntellirentSDK\ApiClient::setBaseUrl('https://syndication.irapp.co');
+IntellirentSDK\Configuration::setBaseUrl('https://syndication.irapp.co');
 $apiClient = new InterllirentSDK\ApiClient();
 ```
 ### List All Properties

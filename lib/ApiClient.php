@@ -9,26 +9,6 @@ use IntellirentSDK\Exceptions\MissingCredentialException;
 class ApiClient
 {
     /**
-     * static @var string base url of the APIs 
-     */
-    private static $BASE_URL = 'http://localhost';
-
-    /**
-     * static @var string base resource path
-     */
-    private static $BASE_RESOURCE_PATH = '/api/v2';
-
-    /**
-     * static @var string company id of IR partner
-     */
-    private static $COMPANY_ID = null;
-
-    /**
-     * static @var string security token
-     */
-    private static $SECURITY_TOKEN = null;
-
-    /**
      * @var array HTTP request headers of the HTTP request
      */
     private $headers = [
@@ -36,51 +16,18 @@ class ApiClient
     ];
 
     /**
-     * Set Api Base (Host) URL for calls
-     * 
-     * @param string $url
+     * @var Configuration $configuration
      */
-    public static function setBaseUrl(string $baseUrl)
-    {
-        self::$BASE_URL = rtrim($baseUrl, '/');
-    }
+    private $configuration;
 
     /**
-     * Set API base resource path
+     * ApiClient constructor
      * 
-     * @param string $baseResourcePath
+     * @param Configuration $configuration
      */
-    public static function setBaseResourcePath(string $baseResourcePath)
+    public function __construct(Configuration $configuration)
     {
-        self::$BASE_RESOURCE_PATH = $baseResourcePath;
-    }
-
-    /**
-     * Set IR partner company id
-     * 
-     * @param string $companyId
-     */
-    public static function setCompanyId(string $companyId)
-    {
-        self::$COMPANY_ID = $companyId;
-    }
-
-    /**
-     * Get IR partner company id
-     */
-    public function getCompanyId()
-    {
-        return self::$COMPANY_ID;
-    }
-
-    /**
-     * Set Security Token
-     * 
-     * @param string $securityToken
-     */
-    public static function setSecurityToken(string $securityToken)
-    {
-        self::$SECURITY_TOKEN = $securityToken;
+        $this->configuration = $configuration;
     }
 
     /**
@@ -123,6 +70,16 @@ class ApiClient
     }
 
     /**
+     * Gets the Configuration
+     * 
+     * @return Configuration
+     */
+    public function getConfiguration()
+    {
+        return $this->configuration;
+    }
+
+    /**
      * Send HTTP Request
      * 
      * @param string $method, HTTP verb (GET|POST|PATCH|PUT|DELETE)
@@ -137,7 +94,7 @@ class ApiClient
         // init HTTP client
         $client = $this->createHttpClient();
 
-        $url = self::$BASE_RESOURCE_PATH . '/' . $resourcePath;
+        $url = $this->configuration->getBaseResourcePath() . '/' . trim($resourcePath, '/');
         
         // make call
         $response = $client->request(
@@ -159,14 +116,14 @@ class ApiClient
      */
     private function createHttpClient(): Client
     {
-        if (null === self::$SECURITY_TOKEN) {
+        if (null === $this->configuration->getSecurityToken()) {
             throw new MissingCredentialException('Security Token is not set or empty');
         }
 
-        $this->addHeader('SECURITY_TOKEN', self::$SECURITY_TOKEN);
+        $this->addHeader('SECURITY_TOKEN', $this->configuration->getSecurityToken());
 
         return new Client([
-            'base_uri' => self::$BASE_URL,
+            'base_uri' => $this->configuration->getBaseUrl(),
             'headers' => $this->getHeaders() 
         ]);
     }
