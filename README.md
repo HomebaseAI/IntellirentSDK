@@ -34,6 +34,7 @@ IntellirentSDK\Configuration::setSecurityToken('your-security-token');
 # For Mock Server
 IntellirentSDK\Configuration::setBaseUrl('https://private-anon-396a0e7408-intellirent.apiary-mock.com');
 
+# This is needed if the application don't have dependency injection system in their software, othwerwise, skip this
 $configuration = new IntellirentSDK\Configuration();
 $apiClient = new IntellirentSDK\ApiClient($configuration);
 
