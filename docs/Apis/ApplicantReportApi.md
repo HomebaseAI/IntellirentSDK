@@ -13,7 +13,7 @@ Method | HTTP request | Description
 ### Usage
 In order to request for Applicant Count Report, we'll be passing an object of type `ApplicantReport`
 ```php
-use IntellirentSDK\Apis\ApplicantReprtApi;
+use IntellirentSDK\Apis\ApplicantReportApi;
 use IntellirentSDK\Models\ApplicantReport;
 
 $applicantReportApi = new ApplicantReportApi($apiClient);
@@ -27,7 +27,7 @@ $applicantReport = new ApplicantReport(
     ] 
 );
 
-$applicantCount = $applicantReportApi->getApplicantCounts($applicantReport);
+$applicantCount = $applicantReportApi->getApplicantsCount($applicantReport);
 ```
 
 ### Parameters
