@@ -73,7 +73,7 @@ use IntellirentSDK\Api\ApplicantApi;
 
 $applicantApi = new ApplicantApi($apiClient);
 
-$applicant = $applicantApi->update(1234, [
+$applicant = $applicantApi->updateApplicant(1234, [
     'first_name' => 'Jane'
 ]);
 ```
