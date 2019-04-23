@@ -20,7 +20,7 @@ use IntellirentSDK\Apis\ApplicantApi;
 $applicantApi = new ApplicantApi($apiClient);
 
 # Using associative array
-$new_applicant = $applicantApi->create([
+$new_applicant = $applicantApi->createApplicant([
     'property_id' => 1234,
     'first_name' => 'John',
     'last_name' => 'Doe',
@@ -43,7 +43,7 @@ $applicant->email = 'jdoe@myintellirent.com';
 $applicant->phone_number = '(123) 456-7890';
 
 # Using Applicant object
-$new_applicant = $applicantApi->create($applicant);
+$new_applicant = $applicantApi->createApplicant($applicant);
 ```
 
 ### Parameters
