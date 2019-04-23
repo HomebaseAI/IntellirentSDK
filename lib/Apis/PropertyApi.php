@@ -79,15 +79,16 @@ final class PropertyApi extends AbstractApi
     /**
      * Update a property
      * 
-     * @param int $propertyId
+     * @param PropertyList $property
      * @param array $data
      * @return Property
      */
-    public function updateProperty(int $propertyId, array $data)
+    public function updateProperty(PropertyList $property, array $data)
     {
         $this->assertCompanyId();
+        $this->assertProperty($property);
 
-        $resourcePath = $this->apiClient->getConfiguration()->getCompanyId() . '/properties/' . $propertyId;
+        $resourcePath = $this->apiClient->getConfiguration()->getCompanyId() . '/properties/' . $property->getID();
 
         $response = $this->apiClient->call('PUT', $resourcePath, [], $data); 
 
@@ -99,17 +100,18 @@ final class PropertyApi extends AbstractApi
     /**
      * Archive a property
      * 
-     * @param int $propertyId
+     * @param PropertList $property
      * @param string $agentEmail
      */
-    public function archiveProperty(int $propertyId, string $agentEmail)
+    public function archiveProperty(PropertyList $property, string $agentEmail)
     {
         $this->assertCompanyId();
+        $this->assertProperty($property);
 
         // this request requires AGENT_EMAIL in the request header
         $this->apiClient->addHeader('AGENT_EMAIL', $agentEmail);
 
-        $resourcePath = $this->apiClient->getConfiguration()->getCompanyId() . '/properties/' . $propertyId;
+        $resourcePath = $this->apiClient->getConfiguration()->getCompanyId() . '/properties/' . $property->getID();
 
         $response = $this->apiClient->call('DELETE', $resourcePath);
 
@@ -142,6 +144,19 @@ final class PropertyApi extends AbstractApi
     {
         if (null === $this->apiClient->getConfiguration()->getCompanyId()) {
             throw new MissingCredentialException('Company id is not set or empty.');
+        }
+    }
+
+    /**
+     * Assert property object
+     * 
+     * @param PropertyList $property
+     * @return void
+     */
+    private function assertProperty(PropertyList $property)
+    {
+        if (null === $property) {
+            throw new \InvalidArgumentException('Property not provided');
         }
     }
 }

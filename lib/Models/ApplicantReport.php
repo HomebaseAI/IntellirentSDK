@@ -25,7 +25,14 @@ class ApplicantReport extends AbstractModel
      */
     public $agent_emails;
 
-    public function __construct(string $startDate, string $endDate, array $agentEmails)
+    /**
+     * ApplicantReport constructor
+     * 
+     * @param string $startDate
+     * @param string $endDate
+     * @param array $agentEmails
+     */
+    public function __construct(string $startDate = null, string $endDate = null, array $agentEmails = null)
     {
         $this->start_date = $startDate;
         $this->end_date = $endDate;

@@ -5,14 +5,6 @@ namespace IntellirentSDK\Models;
 class Applicant extends AbstractModel
 {
     /**
-     * Applicant/User ID that exists on Intellirent. This is optional parameter in create request.
-     * While it is required on existing user single-sign-on request/ update request for email/property
-     * 
-     * @var $userId
-     */
-    public $user_id;
-
-    /**
      * Property ID that exists on Intellirent and syndicated by the requesting partner.
      * The property should be published on Intellirent. It'll be associated to the applicant being specified.
      * 
@@ -48,15 +40,22 @@ class Applicant extends AbstractModel
      */
     public $phone_number;
 
+    /**
+     * Applicant constructor
+     * 
+     * @param int $propertyId
+     * @param string $firstName
+     * @param string $lastName
+     * @param string $email
+     * @param string $phoneNumber
+     */
     public function __construct( 
-        $userId,
-        int $propertyId, 
-        string $firstName, 
-        string $lastName, 
-        string $email,
-        string $phoneNumber
+        int $propertyId = null, 
+        string $firstName = null, 
+        string $lastName = null, 
+        string $email = null,
+        string $phoneNumber = null
     ) {
-        $this->user_id = $userId;
         $this->property_id  = $propertyId;
         $this->first_name = $firstName;
         $this->last_name = $lastName;

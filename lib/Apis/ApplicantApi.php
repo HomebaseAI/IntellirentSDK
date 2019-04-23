@@ -18,9 +18,6 @@ final class ApplicantApi extends AbstractApi
     {
         $data = ($data instanceof Applicant) ? (array) $data : $data;
 
-        // $user_id is not required on create
-        unset($data['user_id']);
-
         $resourcePath = '/applicants';
 
         $response = $this->apiClient->call('POST', $resourcePath, [], $data);
@@ -29,7 +26,8 @@ final class ApplicantApi extends AbstractApi
 
         return new ApplicantResponse(
             $response[0]->USER_ID,
-            $response[0]->SESSION_URL   
+            $response[0]->SESSION_URL,
+            $this->toApplicantData($data)   
         );
     }
 
@@ -52,18 +50,36 @@ final class ApplicantApi extends AbstractApi
 
         return new ApplicantResponse(
             $response[0]->USER_ID,
-            $response[0]->SESSION_URL
+            $response[0]->SESSION_URL,
+            $this->toApplicantData($data)
         );
     }
 
     /**
-     * This request should contain a user_id parameter
+     * TODO: This request should contain a user_id parameter
      * 
      * @param int $userId
      * @param array $data
      */
     public function signIn(int $userId, array $data)
     {
-        return $this->call('POST', $data);
+        $resourcePath = '/applicants';
+        // return $this->call('POST', $data);
+    }
+
+    /**
+     * Cast applicant data from assoc array to Applicant object
+     * 
+     * @param array $data
+     * @return Applicant
+     */
+    private function toApplicantData(array $data)
+    {
+        return new Applicant(
+            isset($data['property_id']) ? $data['property_id'] : null,
+            isset($data['first_name']) ? $data['first_name'] : null,
+            isset($data['last_name']) ? $data['last_name'] : null,
+            isset($data['email']) ? $data['email'] : null
+        );
     }
 }

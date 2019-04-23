@@ -19,6 +19,13 @@ class NewPropertyResponse extends AbstractModel
      */
     private $status;
 
+    /**
+     * NewPropertyResponse constructor
+     * 
+     * @param int $id
+     * @param string $inviteLink
+     * @param string $status
+     */
     public function __construct(int $id, string $inviteLink, string $status)
     {
         $this->id = $id;

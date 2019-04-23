@@ -14,10 +14,23 @@ class ApplicantResponse extends AbstractModel
      */
     private $session_url;
 
-    public function __construct(int $id, string $sessionUrl)
+    /**
+     * @var $data
+     */
+    private $data;
+
+    /**
+     * ApplicantResponse constructor
+     * 
+     * @param int $id
+     * @param string $sessionUrl
+     * @param Applicant $applicant
+     */
+    public function __construct(int $id, string $sessionUrl, Applicant $applicant)
     {
         $this->id = $id;
         $this->session_url = $sessionUrl;
+        $this->data = $applicant;
     }
 
     /**
@@ -38,5 +51,15 @@ class ApplicantResponse extends AbstractModel
     public function getSessionUrl()
     {
         return $this->session_url;
+    }
+
+    /**
+     * get $data
+     * 
+     * @return Applicant
+     */
+    public function getData()
+    {
+        return $this->data;
     }
 }

@@ -5,14 +5,6 @@ namespace IntellirentSDK\Models;
 class Property extends AbstractModel
 {
     /**
-     * Property Id which IR returns in response to create property
-     * 
-     * Data Type: int
-     * @var $id
-     */
-    public $property_id;
-
-    /**
      * Street address of this property (including number, street name, street suffix (e.g Drive, Blvd, etc.), apartment/unit number, etc)
      * 
      * Data Type: string
@@ -31,7 +23,7 @@ class Property extends AbstractModel
     /**
      * Unit number of the property
      * 
-     * Data Type: int
+     * Data Type: string
      * @var $unit_number
      */
     public $unit_number;
@@ -78,7 +70,7 @@ class Property extends AbstractModel
      * Specified rent for to be offered for this property. This value will be used in the Income-to-Rent comparison when evailuating
      * the applicants in this application
      * 
-     * Data Type: double
+     * Data Type: float
      * @var $rate
      */
     public $rate;
@@ -86,7 +78,7 @@ class Property extends AbstractModel
     /**
      * Specified deposit required for this property
      * 
-     * Data Type: double
+     * Data Type: float
      * @var $security_deposit
      */
     public $security_deposit;
@@ -102,7 +94,7 @@ class Property extends AbstractModel
     /**
      * No. of bedrooms of this property
      * 
-     * Data Type: double
+     * Data Type: float
      * @var $bedrooms
      */
     public $bedrooms;
@@ -110,7 +102,7 @@ class Property extends AbstractModel
     /**
      * No. of bathrooms of this property
      * 
-     * Data Type: double
+     * Data Type: float
      * @var $bathrooms
      */
     public $bathrooms;
@@ -173,19 +165,31 @@ class Property extends AbstractModel
      */
     public $property_type;
 
+    /**
+     * Property constructor
+     * 
+     * @param string $streetName1
+     * @param string $city
+     * @param string $state
+     * @param string $postalCode
+     * @param string $rate
+     * @param float $rate
+     * @param float $securityDeposit
+     * @param float $bedrooms
+     * @param float $bathrooms
+     * @param string $agentEmail
+     */
     public function __construct(
-        $propertyId,
-        string $streetName1, 
-        string $city, 
-        string $state, 
-        string $postalCode,
-        float $rate, 
-        float $securityDeposit,
-        float $bedrooms,
-        float $bathrooms,
-        string $agentEmail
+        string $streetName1 = null, 
+        string $city = null, 
+        string $state = null, 
+        string $postalCode = null,
+        float $rate = null, 
+        float $securityDeposit = null,
+        float $bedrooms = null,
+        float $bathrooms = null,
+        string $agentEmail = null
     ) {
-        $this->property_id = $propertyId;
         $this->street_name_1 = $streetName1;       
         $this->city = $city;
         $this->state = $state;

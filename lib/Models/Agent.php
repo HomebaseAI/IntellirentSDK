@@ -14,6 +14,12 @@ class Agent extends AbstractModel
      */
     private $email;
 
+    /**
+     * Agent constructor
+     * 
+     * @param int $id
+     * @param string $email
+     */
     public function __construct(int $id, string $email)
     {
         $this->id = $id;

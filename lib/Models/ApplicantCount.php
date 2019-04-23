@@ -14,7 +14,13 @@ class ApplicantCount extends AbstractModel
      */
     private $agent_details;
 
-    public function __construct(int $matchedRecordCount, $agentDetails)
+    /**
+     * ApplicantCount constructor
+     * 
+     * @param int $matchedRecordCount
+     * @param mixed $agentDetails
+     */
+    public function __construct(int $matchedRecordCount = 0, $agentDetails = null)
     {
         $this->matched_record_count = $matchedRecordCount;
         $this->agent_details = $agentDetails;
