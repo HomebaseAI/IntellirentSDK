@@ -4,10 +4,11 @@
     colors="true"
     verbose="true"
     stopOnFailure="true"
+    bootstrap="vendor/autoload.php"
 >
     <testsuites>
         <testsuite name="unit">
-            <directory>./tests/unit</directory>
+            <directory>./tests/Unit</directory>
         </testsuite>
     </testsuites>
 </phpunit>

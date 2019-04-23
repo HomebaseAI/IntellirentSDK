@@ -9,6 +9,7 @@ use IntellirentSDK\Exceptions\MissingCredentialException;
 use IntellirentSDK\Models\Property;
 use IntellirentSDK\Models\PropertyList;
 use IntellirentSDK\Models\NewPropertyResponse;
+use IntellirentSDK\Configuration;
 
 class PropertyApiTest extends TestCase
 {
@@ -21,12 +22,12 @@ class PropertyApiTest extends TestCase
         $securityToken = 'xxxxxxxxxxxxxxxxxxxxxx';
         $companyId = 'test';
 
-        ApiClient::setBaseUrl($baseUrl);
-        ApiClient::setBaseResourcePath($baseResourcePath);
-        ApiClient::setSecurityToken($securityToken);
-        ApiClient::setCompanyId($companyId);
+        Configuration::setBaseUrl($baseUrl);
+        Configuration::setBaseResourcePath($baseResourcePath);
+        Configuration::setSecurityToken($securityToken);
+        Configuration::setCompanyId($companyId);
 
-        $apiClient = new ApiClient();
+        $apiClient = new ApiClient(new Configuration());
 
         $this->propertyApi = new PropertyApi($apiClient);
     }
@@ -46,7 +47,7 @@ class PropertyApiTest extends TestCase
     /** @test */
     public function create_property_from_obj()
     {
-        $property = new IntellirentSDK\Models\Property();
+        $property = new Property();
 
         $property->street_name_1 = '5th avenue';
         $property->city = 'Santa Clara';
@@ -119,7 +120,7 @@ class PropertyApiTest extends TestCase
         $properties = $this->propertyApi->listAllProperties();
         $agentEmail = 'jdoe@myintellirent.com';
 
-        $response = $this->propertyApi->archiveProperty($properties, $agentEmail);
+        $response = $this->propertyApi->archiveProperty($properties[0], $agentEmail);
         $this->assertRegExp('/Archived Successfully/i', $response);
     }
 }

@@ -7,6 +7,7 @@ use IntellirentSDK\ApiClient;
 use IntellirentSDK\Apis\ApplicantReportApi;
 use IntellirentSDK\Models\ApplicantReport;
 use IntellirentSDK\Models\ApplicantCount;
+use IntellirentSDK\Configuration;
 
 class ApplicantReportApiTest extends TestCase
 {
@@ -18,11 +19,11 @@ class ApplicantReportApiTest extends TestCase
         $baseResourcePath = '/api/v2';
         $securityToken = 'xxxxxxxxxxxxxxxxxxxxxx';
 
-        ApiClient::setBaseUrl($baseUrl);
-        ApiClient::setBaseResourcePath($baseResourcePath);
-        ApiClient::setSecurityToken($securityToken);
+        Configuration::setBaseUrl($baseUrl);
+        Configuration::setBaseResourcePath($baseResourcePath);
+        Configuration::setSecurityToken($securityToken);
 
-        $apiClient = new ApiClient();
+        $apiClient = new ApiClient(new Configuration());
 
         $this->applicantReportApi = new ApplicantReportApi($apiClient);
     }

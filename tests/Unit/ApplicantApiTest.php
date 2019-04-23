@@ -7,6 +7,7 @@ use IntellirentSDK\ApiClient;
 use IntellirentSDK\Apis\ApplicantApi;
 use IntellirentSDK\Models\Applicant;
 use IntellirentSDK\Models\ApplicantResponse;
+use IntellirentSDK\Configuration;
 
 class ApplicantApiTest extends TestCase
 {
@@ -18,11 +19,11 @@ class ApplicantApiTest extends TestCase
         $baseResourcePath = '/api/v2';
         $securityToken = 'xxxxxxxxxxxxxxxxxxxxxx';
 
-        ApiClient::setBaseUrl($baseUrl);
-        ApiClient::setBaseResourcePath($baseResourcePath);
-        ApiClient::setSecurityToken($securityToken);
+        Configuration::setBaseUrl($baseUrl);
+        Configuration::setBaseResourcePath($baseResourcePath);
+        Configuration::setSecurityToken($securityToken);
 
-        $apiClient = new ApiClient();
+        $apiClient = new ApiClient(new Configuration());
 
         $this->applicantApi = new ApplicantApi($apiClient);
     }
@@ -70,7 +71,7 @@ class ApplicantApiTest extends TestCase
             'first_name' => 'Jane'
         ];
 
-        $response = $this->applicantApi->update($id, $data);
+        $response = $this->applicantApi->updateApplicant($id, $data);
         $this->assertInstanceOf(ApplicantResponse::class, $response);
     }
 }
