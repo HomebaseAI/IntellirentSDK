@@ -39,7 +39,7 @@ This API uses a `security_token`, which a partner will get by contacting IR admi
 #### Applicant Report
 This API uses a `security_key`, which will be shared with any entity who wishes to use our API.
 
-Please follow the [installation procedure](README.md#installation)
+Please follow the [installation procedure](#installation)
 
 ## Get Started
 

@@ -5,9 +5,9 @@ All API methods require an [ApiClient](../../README.md#creating-a-client)
 
 Method | HTTP request | Description
 ------- | ------------- | ---------
-[**createApplicant**](ApplicantApi.md#createApplicant) | **POST** /applicants |
-[**updateApplicant**](ApplicantApi.md#updateApplicant) | **PUT** /applicants |
-[**signIn**](ApplicantApi.md#signIn) | **POST** /applicants/:sso_hash |
+[**createApplicant**](#createApplicant) | **POST** /applicants |
+[**updateApplicant**](#updateApplicant) | **PUT** /applicants |
+[**signIn**](#signIn) | **POST** /applicants/:sso_hash |
 
 # **createApplicant**
 > \IntellirentSDK\Models\ApplicantResponse
