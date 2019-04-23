@@ -5,10 +5,10 @@ All API methods require an [ApiClient](../../README.md#creating-a-client)
 
 Method | HTTP request | Description
 ------- | ------------- | ---------
-[**listAllProperties**](PropertyApi.md#listAllProperties) | **GET** /:company_id/properties |
-[**createProperty**](PropertyApi.md#createProperty) | **POST** /:company_id/properties |
-[**updateProperty**](PropertyApi.md#updateProperty) | **PUT** /:company_id/properties/:property_id |
-[**archiveProperty**](PropertyApi.md#archiveProperty) | **DELETE** /:company_id/properties/:property_id |
+[**listAllProperties**](#listAllProperties) | **GET** /:company_id/properties |
+[**createProperty**](#createProperty) | **POST** /:company_id/properties |
+[**updateProperty**](#updateProperty) | **PUT** /:company_id/properties/:property_id |
+[**archiveProperty**](#archiveProperty) | **DELETE** /:company_id/properties/:property_id |
 
 # **listAllProperties**
 > \IntellirentSDK\PropertyList

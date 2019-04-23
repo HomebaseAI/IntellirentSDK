@@ -5,7 +5,7 @@ All API methods require an [ApiClient](../../README.md#creating-a-client)
 
 Method | HTTP request | Description
 ------- | ------------- | ---------
-[**getApplicantsCount**](ApplicantReportApi.md#getApplicantsCount) | **GET** /applicants_count |
+[**getApplicantsCount**](#getApplicantsCount) | **GET** /applicants_count |
 
 # **getApplicantsCount**
 > \IntellirentSDK\Models\ApplicantCount
