@@ -69,7 +69,7 @@ $new_applicant = $applicantApi->createApplicant($applicant);
 ## Usage
 To update existing applicant, we'll provide the `$userId` and and an `array` of `$data` with the applicant information to the method call
 ```php
-use IntellirentSDK\Api\ApplicantApi;
+use IntellirentSDK\Apis\ApplicantApi;
 
 $applicantApi = new ApplicantApi($apiClient);
 
