@@ -6,7 +6,7 @@ use IntellirentSDK\ApiClient;
 use IntellirentSDK\Models\Applicant;
 use IntellirentSDK\Models\ApplicantResponse;
 
-final class ApplicantApi extends AbstractApi
+class ApplicantApi extends AbstractApi
 {
     /**
      * Create a new applicant

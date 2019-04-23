@@ -4,9 +4,9 @@ namespace IntellirentSDK\Apis;
 
 use IntellirentSDK\Models\ApplicantReport;
 use IntellirentSDK\Models\Agent;
-use IntellirentSDK\Models\applicantCount;
+use IntellirentSDK\Models\ApplicantCount;
 
-final class ApplicantReportApi extends AbstractApi
+class ApplicantReportApi extends AbstractApi
 {
     /**
      * Get applicants count based from ApplicantReport data

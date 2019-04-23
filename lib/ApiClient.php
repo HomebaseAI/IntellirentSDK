@@ -5,6 +5,7 @@ namespace IntellirentSDK;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use IntellirentSDK\Exceptions\MissingCredentialException;
+use IntellirentSDK\Exceptions\ValidationException;
 
 class ApiClient
 {

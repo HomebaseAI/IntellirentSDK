@@ -8,7 +8,7 @@ use IntellirentSDK\Models\PropertyList;
 use IntellirentSDK\Models\NewPropertyResponse;
 use IntellirentSDK\Exception\MissingCredentialException;
 
-final class PropertyApi extends AbstractApi
+class PropertyApi extends AbstractApi
 {
     /**
      * List all Properties
