@@ -3,13 +3,11 @@
 namespace IntellirentSDK\Tests;
 
 use PHPUnit\Framework\TestCase;
-use IntellirentSDK\ApiClient;
 use IntellirentSDK\Apis\PropertyApi;
 use IntellirentSDK\Exceptions\MissingCredentialException;
 use IntellirentSDK\Models\Property;
 use IntellirentSDK\Models\PropertyList;
 use IntellirentSDK\Models\NewPropertyResponse;
-use IntellirentSDK\Configuration;
 
 class PropertyApiTest extends TestCase
 {
@@ -17,19 +15,7 @@ class PropertyApiTest extends TestCase
 
     public function setUp()
     {
-        $baseUrl = 'https://private-anon-396a0e7408-intellirent.apiary-mock.com';
-        $baseResourcePath = '/api/v2';
-        $securityToken = 'xxxxxxxxxxxxxxxxxxxxxx';
-        $companyId = 'test';
-
-        Configuration::setBaseUrl($baseUrl);
-        Configuration::setBaseResourcePath($baseResourcePath);
-        Configuration::setSecurityToken($securityToken);
-        Configuration::setCompanyId($companyId);
-
-        $apiClient = new ApiClient(new Configuration());
-
-        $this->propertyApi = new PropertyApi($apiClient);
+        $this->propertyApi = $this->createMock(PropertyApi::class);
     }
 
     public function tearDown()
@@ -38,14 +24,23 @@ class PropertyApiTest extends TestCase
     }
 
     /** @test */
-    public function list_all_properties()
+    public function can_list_all_properties()
     {
+        $expected = new PropertyList(
+            1,
+            'Test Address'
+        );
+
+        $this->propertyApi->expects($this->once())
+             ->method('listAllProperties')
+             ->will($this->returnValue($expected));
+
         $response = $this->propertyApi->listAllProperties();
-        $this->assertInstanceOf(PropertyList::class, $response[0]);
+        $this->assertEquals($expected, $response);
     }
 
     /** @test */
-    public function create_property_from_obj()
+    public function can_create_property_from_object_argument()
     {
         $property = new Property();
 
@@ -67,12 +62,23 @@ class PropertyApiTest extends TestCase
         $property->amenities = ["Hardwood floors","Elevator in building","Garden","On-site gym"];
         $property->pictures = ["https://up-production.s3.amazonaws.com/uploads/grid_view_c8313a34-1402-4350-82cc-d0d103927c0e.jpg"];
 
+        $expected = new NewPropertyResponse(
+            1,
+            'https://invite-link.test',
+            'published'
+        );
+
+        $this->propertyApi->expects($this->once())
+             ->method('createProperty')
+             ->with($this->identicalTo($property))
+             ->will($this->returnValue($expected));
+
         $response = $this->propertyApi->createProperty($property);
-        $this->assertInstanceOf(NewPropertyResponse::class, $response);
+        $this->assertEquals($expected, $response);
     }
 
     /** @test */
-    public function create_property_from_arr()
+    public function can_create_property_from_array_argument()
     {
         $property = [
             'agent_email' => 'jdoe@myintellirent.com',
@@ -96,31 +102,52 @@ class PropertyApiTest extends TestCase
             'pictures' => ['https://up-production.s3.amazonaws.com/uploads/grid_view_c8313a34-1402-4350-82cc-d0d103927c0e.jpg']
         ];
 
+        $expected = new NewPropertyResponse(
+            1,
+            'http://invite-link',
+            'published'
+        );
+
+        $this->propertyApi->expects($this->once())
+             ->method('createProperty')
+             ->with($property)
+             ->will($this->returnValue($expected));
+
         $response = $this->propertyApi->createProperty($property);
-        $this->assertInstanceOf(NewPropertyResponse::class, $response);
+        $this->assertEquals($response, $response);
     }
 
     /** @test */
-    public function update_property()
+    public function can_update_property()
     {
-        $properties = $this->propertyApi->listAllProperties();
+        $property = new PropertyList(1, 'Test Address');
 
         $data = [
             'unit_number' => 2,
             'parking' => 2
         ];
 
-        $response = $this->propertyApi->updateProperty($properties[0], $data);
+        $this->propertyApi->expects($this->once())
+             ->method('updateProperty')
+             ->with($this->identicalTo($property), $data)
+             ->will($this->returnValue('updated'));
+
+        $response = $this->propertyApi->updateProperty($property, $data);
         $this->assertRegExp('/updated/i', $response);
     }
 
     /** @test */
-    public function archive_property()
+    public function can_archive_property()
     {
-        $properties = $this->propertyApi->listAllProperties();
+        $property = new PropertyList(1, 'Test Address');
         $agentEmail = 'jdoe@myintellirent.com';
 
-        $response = $this->propertyApi->archiveProperty($properties[0], $agentEmail);
+        $this->propertyApi->expects($this->once())
+             ->method('archiveProperty')
+             ->with($this->identicalTo($property), $agentEmail)
+             ->will($this->returnValue('Archived Successfully'));
+
+        $response = $this->propertyApi->archiveProperty($property, $agentEmail);
         $this->assertRegExp('/Archived Successfully/i', $response);
     }
 }

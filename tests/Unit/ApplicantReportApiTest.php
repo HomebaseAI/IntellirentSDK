@@ -3,11 +3,9 @@
 namespace IntellirentSDK\Tests;
 
 use PHPUnit\Framework\TestCase;
-use IntellirentSDK\ApiClient;
 use IntellirentSDK\Apis\ApplicantReportApi;
 use IntellirentSDK\Models\ApplicantReport;
 use IntellirentSDK\Models\ApplicantCount;
-use IntellirentSDK\Configuration;
 
 class ApplicantReportApiTest extends TestCase
 {
@@ -15,17 +13,7 @@ class ApplicantReportApiTest extends TestCase
 
     public function setUp()
     {
-        $baseUrl = 'https://private-anon-396a0e7408-intellirent.apiary-mock.com';
-        $baseResourcePath = '/api/v2';
-        $securityToken = 'xxxxxxxxxxxxxxxxxxxxxx';
-
-        Configuration::setBaseUrl($baseUrl);
-        Configuration::setBaseResourcePath($baseResourcePath);
-        Configuration::setSecurityToken($securityToken);
-
-        $apiClient = new ApiClient(new Configuration());
-
-        $this->applicantReportApi = new ApplicantReportApi($apiClient);
+       $this->applicantReportApi = $this->createMock(ApplicantReportApi::class);
     }
 
     public function tearDown()
@@ -34,7 +22,7 @@ class ApplicantReportApiTest extends TestCase
     }
 
     /** @test */
-    public function get_applicants_count()
+    public function can_get_applicants_count()
     {
         $applicantReport = new ApplicantReport(
             '2018-01-01', 
@@ -46,7 +34,15 @@ class ApplicantReportApiTest extends TestCase
             ] 
         );
 
+        $expected = new ApplicantCount();
+
+        $this->applicantReportApi->expects($this->once())
+             ->method('getApplicantsCount')
+             ->with($this->identicalTo($applicantReport))
+             ->will($this->returnValue($expected));
+             
+
         $response = $this->applicantReportApi->getApplicantsCount($applicantReport);
-        $this->assertInstanceOf(ApplicantCount::class, $response);
+        $this->assertEquals($expected, $response);
     }
 }
