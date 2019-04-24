@@ -4,10 +4,11 @@ namespace IntellirentSDK\Apis;
 
 use IntellirentSDK\ApiClient;
 use IntellirentSDK\Traits\Response;
+use IntellirentSDK\Traits\StringHelper;
 
 abstract class AbstractApi
 {
-    use Response;
+    use StringHelper, Response;
 
     /**
      * @var $apiClient

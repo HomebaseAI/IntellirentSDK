@@ -7,6 +7,7 @@ use IntellirentSDK\Models\Property;
 use IntellirentSDK\Models\PropertyList;
 use IntellirentSDK\Models\NewPropertyResponse;
 use IntellirentSDK\Exception\MissingCredentialException;
+use ReflectionClass;
 
 class PropertyApi extends AbstractApi
 {
@@ -72,7 +73,8 @@ class PropertyApi extends AbstractApi
         return new NewPropertyResponse(
             $response->intellirent_property_id, 
             $response->property_invite_link, 
-            $response->status
+            $response->status,
+            $this->toPropertyObject($data)
         );
     }
 
@@ -158,5 +160,26 @@ class PropertyApi extends AbstractApi
         if (null === $property) {
             throw new \InvalidArgumentException('Property not provided');
         }
+    }
+
+    /**
+     * Cast array of data to Property object
+     * 
+     * @param array $data
+     * @return Property
+     */
+    private function toPropertyObject(array $data)
+    {
+        $rc = new ReflectionClass(Property::class);
+        $constructorParams = $rc->getConstructor()->getParameters();
+
+        $arguments = [];
+
+        foreach ($constructorParams as $param) {
+            $argument = $this->fromCamelCase($param->name);
+            $arguments[] = $data[$argument];
+        }
+
+        return $rc->newInstanceArgs($arguments);
     }
 }

@@ -20,17 +20,23 @@ class NewPropertyResponse extends AbstractModel
     private $status;
 
     /**
+     * @var $data
+     */
+    private $data;
+
+    /**
      * NewPropertyResponse constructor
      * 
      * @param int $id
      * @param string $inviteLink
      * @param string $status
      */
-    public function __construct(int $id, string $inviteLink, string $status)
+    public function __construct(int $id, string $inviteLink, string $status, Property $property = null)
     {
         $this->id = $id;
         $this->invite_link = $inviteLink;
         $this->status = $status;
+        $this->data = $property;
     }
 
     /**
