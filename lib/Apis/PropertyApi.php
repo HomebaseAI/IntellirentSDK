@@ -2,7 +2,6 @@
 
 namespace IntellirentSDK\Apis;
 
-use IntellirentSDK\ApiClient;
 use IntellirentSDK\Models\Property;
 use IntellirentSDK\Models\PropertyList;
 use IntellirentSDK\Models\NewPropertyResponse;
