@@ -80,6 +80,7 @@ All Classes are in `IntellirentSDK\Apis` namespace
 *PropertyApi* | [**createProperty**](docs/Apis/PropertyApi.md#createProperty) | **POST** /:company_id/properties |
 *PropertyApi* | [**updateProperty**](docs/Apis/PropertyApi.md#updateProperty) | **PUT** /:company_id/properties/:property_id |
 *PropertyApi* | [**archiveProperty**](docs/Apis/PropertyApi.md#archiveProperty) | **DELETE** /:company_id/properties/:property_id |
+*ReferralContactApi* | [**createReferralContacts**](docs/Apis/ReferralContactApi.md#createReferralContacts) | **POST** /create_referral_contacts |
 
 ## Documentation for Models
 - [Agent](docs/Models/Agent.md)

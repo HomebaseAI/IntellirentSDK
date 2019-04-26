@@ -6,6 +6,12 @@ use IntellirentSDK\Models\ReferralContactResponse;
 
 class ReferralContactApi extends AbstractApi
 {
+    /**
+     * Create te referrer's information of each of the recipient on the hubspot, provided in te request
+     * 
+     * @param array $referral
+     * @return ReferralContactResponse
+     */
     public function createReferralContacts(array $referral)
     {
         $resourcePath = '/create_referral_contacts';
