@@ -2,17 +2,29 @@
 
 namespace IntellirentSDK\Apis;
 
-use IntellirentSDK\ApiClient;
 use IntellirentSDK\Models\Applicant;
-use IntellirentSDK\Models\ApplicantResponse;
+use IntellirentSDK\ResponseSerializer\ApplicantSerializer;
 
 class ApplicantApi extends AbstractApi
 {
     /**
+     * ApplicantApi constructor
+     * 
+     * @param ApplicantSerializer $applicantSerializer
+     */
+    public function __construct(ApplicantSerializer $applicantSerializer = null)
+    {
+        // Call mom!
+        parent::__construct();
+
+        $this->responseSerializer->setSerializer($this->resolve($applicantSerializer, ApplicantSerializer::class));
+    }
+
+    /**
      * Create a new applicant
      * 
      * @param array|Applicant $data
-     * @return Applicant
+     * @return ApplicantResponse
      */
     public function createApplicant($data)
     {
@@ -22,13 +34,7 @@ class ApplicantApi extends AbstractApi
 
         $response = $this->apiClient->call('POST', $resourcePath, [], $data);
 
-        $this->validateResponse($response[0], ['USER_ID', 'SESSION_URL']);
-
-        return new ApplicantResponse(
-            $response[0]->USER_ID,
-            $response[0]->SESSION_URL,
-            $this->toApplicantData($data)   
-        );
+        return $this->responseSerializer->getSerializer()->parseApplicant($response[0], $data);
     }
 
     /**
@@ -36,7 +42,7 @@ class ApplicantApi extends AbstractApi
      * 
      * @param int $userId
      * @param array $data
-     * @return Applicant
+     * @return ApplicantResponse
      */
     public function updateApplicant(int $userId, array $data)
     {
@@ -46,13 +52,7 @@ class ApplicantApi extends AbstractApi
 
         $response = $this->apiClient->call('POST', $resourcePath, [], $data);
 
-        $this->validateResponse($response[0], ['USER_ID', 'SESSION_URL']);
-
-        return new ApplicantResponse(
-            $response[0]->USER_ID,
-            $response[0]->SESSION_URL,
-            $this->toApplicantData($data)
-        );
+        return $this->responseSerializer->getSerializer()->parseApplicant($response[0], $data);
     }
 
     /**
@@ -65,21 +65,5 @@ class ApplicantApi extends AbstractApi
     {
         $resourcePath = '/applicants';
         // return $this->call('POST', $data);
-    }
-
-    /**
-     * Cast applicant data from assoc array to Applicant object
-     * 
-     * @param array $data
-     * @return Applicant
-     */
-    private function toApplicantData(array $data)
-    {
-        return new Applicant(
-            isset($data['property_id']) ? $data['property_id'] : null,
-            isset($data['first_name']) ? $data['first_name'] : null,
-            isset($data['last_name']) ? $data['last_name'] : null,
-            isset($data['email']) ? $data['email'] : null
-        );
     }
 }

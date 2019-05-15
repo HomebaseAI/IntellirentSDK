@@ -2,14 +2,25 @@
 
 namespace IntellirentSDK\Apis;
 
-use IntellirentSDK\Models\Property;
 use IntellirentSDK\Models\PropertyList;
-use IntellirentSDK\Models\NewPropertyResponse;
+use IntellirentSDK\Models\Property;
 use IntellirentSDK\Exception\MissingCredentialException;
-use ReflectionClass;
+use IntellirentSDK\ResponseSerializer\PropertySerializer;
 
 class PropertyApi extends AbstractApi
 {
+    /**
+     * PropertyApi constructor
+     * 
+     * @param PropertySerializer $propertySerializer
+     */
+    public function __construct(PropertySerializer $propertySerializer = null)
+    {
+        parent::__construct();
+
+        $this->responseSerializer->setSerializer($this->resolve($propertySerializer, PropertySerializer::class));
+    }
+
     /**
      * List all Properties
      * 
@@ -24,13 +35,7 @@ class PropertyApi extends AbstractApi
 
         $response = $this->apiClient->call('GET', $resourcePath);
 
-        $properties = [];
-
-        foreach ($response as $property) {
-            $properties[] = new PropertyList($property->id, $property->address);
-        }
-
-        return $properties;
+        return $this->responseSerializer->getSerializer()->parseProperties($response);
     }
 
     /**
@@ -67,14 +72,7 @@ class PropertyApi extends AbstractApi
 
         $response = $this->apiClient->call('POST', $resourcePath, [], $data);
 
-        $this->validateResponse($response, ['intellirent_property_id', 'property_invite_link', 'status']);
-     
-        return new NewPropertyResponse(
-            $response->intellirent_property_id, 
-            $response->property_invite_link, 
-            $response->status,
-            $this->toPropertyObject($data)
-        );
+        return $this->responseSerializer->getSerializer()->parseNewPropertyResponse($response, $data);
     }
 
     /**
@@ -82,7 +80,7 @@ class PropertyApi extends AbstractApi
      * 
      * @param PropertyList $property
      * @param array $data
-     * @return Property
+     * @return string
      */
     public function updateProperty(PropertyList $property, array $data)
     {
@@ -93,8 +91,6 @@ class PropertyApi extends AbstractApi
 
         $response = $this->apiClient->call('PUT', $resourcePath, [], $data); 
 
-        $this->validateResponse($response, ['status']);
-
         return $response->status;
     }
 
@@ -103,6 +99,7 @@ class PropertyApi extends AbstractApi
      * 
      * @param PropertList $property
      * @param string $agentEmail
+     * @return string
      */
     public function archiveProperty(PropertyList $property, string $agentEmail)
     {
@@ -159,26 +156,5 @@ class PropertyApi extends AbstractApi
         if (null === $property) {
             throw new \InvalidArgumentException('Property not provided');
         }
-    }
-
-    /**
-     * Cast array of data to Property object
-     * 
-     * @param array $data
-     * @return Property
-     */
-    private function toPropertyObject(array $data)
-    {
-        $rc = new ReflectionClass(Property::class);
-        $constructorParams = $rc->getConstructor()->getParameters();
-
-        $arguments = [];
-
-        foreach ($constructorParams as $param) {
-            $argument = $this->fromCamelCase($param->name);
-            $arguments[] = $data[$argument];
-        }
-
-        return $rc->newInstanceArgs($arguments);
     }
 }

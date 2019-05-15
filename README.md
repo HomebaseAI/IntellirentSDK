@@ -43,7 +43,7 @@ Please follow the [installation procedure](#installation)
 
 ## Get Started
 
-#### Creating a Client
+#### Configuring the SDK
 ```php
 use IntellirentSDK\Configuration;
 
@@ -59,11 +59,6 @@ Configuration::setBaseUrl('https://private-anon-396a0e7408-intellirent.apiary-mo
 
 # For production
 Configuration::setBaseUrl('https://syndication.irapp.co');
-$apiClient = new InterllirentSDK\ApiClient();
-
-# This is needed if the application don't have dependency injection system in their software, othwerwise, skip this
-$configuration = new IntellirentSDK\Configuration();
-$apiClient = new IntellirentSDK\ApiClient($configuration);
 ```
 
 ## Documentation for APIs

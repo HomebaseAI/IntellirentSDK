@@ -2,10 +2,23 @@
 
 namespace IntellirentSDK\Apis;
 
-use IntellirentSDK\Models\ReferralContactResponse;
+use IntellirentSDK\ResponseSerializer\ReferralContactSerializer;
 
 class ReferralContactApi extends AbstractApi
 {
+    /**
+     * ReferralContacatApi constructor
+     * 
+     * @param ReferralContactSerializer $referralContactSerializer
+     */
+    public function __construct(ReferralContactSerializer $referralContactSerializer = null)
+    {
+        // Call mom!
+        parent::__construct();
+
+        $this->responseSerializer->setSerializer($this->resolve($referralContactSerializer, ReferralContactSerializer::class));
+    }
+
     /**
      * Create te referrer's information of each of the recipient on the hubspot, provided in te request
      * 
@@ -18,12 +31,6 @@ class ReferralContactApi extends AbstractApi
 
         $response = $this->apiClient->call('POST', $resourcePath, [], ['referral' => $referral]);
 
-        $this->validateResponse($response, ['response_code', 'response']);
-
-        return new ReferralContactResponse(
-            $response->response_code,
-            $response->response,
-            $referral
-        );
+        return $this->responseSerializer->getSerializer()->parseReferralContactResponse($response, $referral);
     }
 }

@@ -1,7 +1,6 @@
 # IntellirentSDK\Apis\ApplicantApi
 
-All URIs are relative to *{base_url}/api/v2* \
-All API methods require an [ApiClient](../../README.md#creating-a-client)
+All URIs are relative to *{base_url}/api/v2* 
 
 Method | HTTP request | Description
 ------- | ------------- | ---------
@@ -17,7 +16,7 @@ To create a new applicant, we can either provide an (associative) `array` with t
 ```php
 use IntellirentSDK\Apis\ApplicantApi;
 
-$applicantApi = new ApplicantApi($apiClient);
+$applicantApi = new ApplicantApi();
 
 # Using associative array
 $new_applicant = $applicantApi->createApplicant([
@@ -71,7 +70,7 @@ To update existing applicant, we'll provide the `$userId` and and an `array` of 
 ```php
 use IntellirentSDK\Apis\ApplicantApi;
 
-$applicantApi = new ApplicantApi($apiClient);
+$applicantApi = new ApplicantApi();
 
 $applicant = $applicantApi->updateApplicant(1234, [
     'first_name' => 'Jane'

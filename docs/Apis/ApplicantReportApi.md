@@ -1,7 +1,6 @@
 # \IntellirentSDK\Apis\ApplicantReportApi
 
-All URIs are relative to *{base_url}/api/v2* \
-All API methods require an [ApiClient](../../README.md#creating-a-client)
+All URIs are relative to *{base_url}/api/v2* 
 
 Method | HTTP request | Description
 ------- | ------------- | ---------
@@ -16,7 +15,7 @@ In order to request for Applicant Count Report, we'll be passing an object of ty
 use IntellirentSDK\Apis\ApplicantReportApi;
 use IntellirentSDK\Models\ApplicantReport;
 
-$applicantReportApi = new ApplicantReportApi($apiClient);
+$applicantReportApi = new ApplicantReportApi();
 $applicantReport = new ApplicantReport(
     '2018-01-01', 
     '2018-12-31',

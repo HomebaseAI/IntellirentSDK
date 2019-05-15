@@ -1,7 +1,6 @@
 # IntellirentSDK\Apis\ReferralContactApi
 
-All URIs are relative to *{base_url}/api/v2* \
-All API methods require an [ApiClient](../../README.md#creating-a-client)
+All URIs are relative to *{base_url}/api/v2* 
 
 Method | HTTP request | Description
 ------- | ------------- | ---------
@@ -16,7 +15,7 @@ use IntellirentSDK\Apis\ReferralContactApi;
 use IntellirentSDK\Models\ReferralContact;
 
 
-$referralContactApi = new ReferralContactApi($apiClient);
+$referralContactApi = new ReferralContactApi();
 $contact1 = new ReferralContact();
 
 $contact1->message_id = 1001;
@@ -31,7 +30,7 @@ $contact1->referral_time = '2019-03-10 22:00';
 $contact2 = new ReferralContact();
 
 $contact2->message_id = 1002;
-$contact2->referrer_first_name 'Bernd';
+$contact2->referrer_first_name = 'Bernd';
 $contact2->referrer_last_name = 'Leno';
 $contact2->referrer_email = 'berndleno@intellirent.com';
 $contact2->recipient_email = 'xhaka@intellirent.com';

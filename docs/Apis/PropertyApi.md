@@ -1,7 +1,6 @@
 # \IntellirentSDK\Apis\PropertyApi
 
-All URIs are relative to *{base_url}/api/v2* \
-All API methods require an [ApiClient](../../README.md#creating-a-client)
+All URIs are relative to *{base_url}/api/v2* 
 
 Method | HTTP request | Description
 ------- | ------------- | ---------
@@ -11,20 +10,20 @@ Method | HTTP request | Description
 [**archiveProperty**](#archiveProperty) | **DELETE** /:company_id/properties/:property_id |
 
 # **listAllProperties**
-> \IntellirentSDK\PropertyList
+> \IntellirentSDK\Models\Collections\PropertyCollection
 
 ### Usage
 ```php
 use IntellirentSDK\Apis\PropertyApi;
 
-$propertyApi = new PropertyApi($apiClient);
+$propertyApi = new PropertyApi();
 $properties = $propertyApi->listAllProperties();
 ```
 ### Parameters
 *None*
 
 ### Return type
-[**\IntellirentSDK\Models\PropertyList**](../Models/PropertyList.md)
+[**\IntellirentSDK\Models\Collections\PropertyCollection**](../Models/Collections\PropertyCollection.md)
 
 ### Authorization
 [Security Token](../../README.md#Quickstart)
@@ -43,7 +42,7 @@ To create a new property, we can either provide an (associative) `array` with th
 ```php
 use IntellirentSDK\Apis\PropertyApi;
 
-$propertyApi = new PropertyApi($apiClient);
+$propertyApi = new PropertyApi();
 
 # Using associative array
 $newPropertyResponse = $propertyApi->createProperty([
@@ -72,6 +71,8 @@ $newPropertyResponse = $propertyApi->createProperty([
 ```php
 use IntellirentSDK\Apis\PropertyApi;
 use IntellirentSDK\Models\Property;
+
+$propertyApi = new PropertyApi();
 
 # Using Property object
 $property = new IntellirentSDK\Models\Property();
@@ -125,7 +126,7 @@ use IntellirentSDK\Apis\PropertyApi;
 $propertyApi = new PropertyApi($apiClient);
 $properties = $propertyApi->listAllProperties();
 
-$propertyApi->updateProperty($properties[0], [
+$propertyApi->updateProperty($properties->getItems()[0], [
     'unit_number' => 2,
     'parking' => 2
 ]);
@@ -160,7 +161,7 @@ use IntellirentSDK\Apis\PropertyApi;
 $propertyApi = new PropertyApi($apiClient);
 
 $properties = $propertyApi->listAllProperties();
-$propertyApi->archiveProperty($properties[0], 'jdoe@myintellirent.com');
+$propertyApi->archiveProperty($properties->getItems()[0], 'jdoe@myintellirent.com');
 ```
 
 ### Parameters

@@ -3,43 +3,32 @@
 namespace IntellirentSDK\Apis;
 
 use IntellirentSDK\ApiClient;
-use IntellirentSDK\Traits\Response;
-use IntellirentSDK\Traits\StringHelper;
+use IntellirentSDK\ResponseSerializer;
+use IntellirentSDK\Traits\ObjectResolver;
 
 abstract class AbstractApi
 {
-    use StringHelper, Response;
+    use ObjectResolver;
 
     /**
      * @var $apiClient
      */
     protected $apiClient;
 
-    public function __construct(ApiClient $apiClient)
-    {
-        $this->setApiClient($apiClient);
-    }
+    /**
+     * @var $responseSerializer
+     */
+    protected $responseSerializer;
 
     /**
-     * set the API client
+     * Default Api constructor
      * 
      * @param ApiClient $apiClient
-     * @return $this
+     * @param ResponseSerializer $responseSerializer
      */
-    public function setApiClient(ApiClient $apiClient)
+    public function __construct(ApiClient $apiClient = null, ResponseSerializer $responseSerializer = null)
     {
-        $this->apiClient = $apiClient;
-        return $this;
-    }
-
-    /**
-     * get the API client
-     * 
-     * @param void
-     * @return ApiClient
-     */
-    public function getApiClient(): ApiClient
-    {
-        return $this->apiClient;
+        $this->apiClient = $this->resolve($apiClient, ApiClient::class);
+        $this->responseSerializer = $this->resolve($responseSerializer, ResponseSerializer::class);
     }
 }

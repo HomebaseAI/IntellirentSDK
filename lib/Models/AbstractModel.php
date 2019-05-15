@@ -4,7 +4,7 @@ namespace IntellirentSDK\Models;
 
 use JsonSerializable;
 
-abstract class AbstractModel implements JsonSerializable
+abstract class AbstractModel implements JsonSerializable, ModelInterface
 {
     /**
      * Specify data which should be serialized to JSON

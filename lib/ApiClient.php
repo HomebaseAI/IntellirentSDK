@@ -6,9 +6,12 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use IntellirentSDK\Exceptions\MissingCredentialException;
 use IntellirentSDK\Exceptions\ValidationException;
+use IntellirentSDK\Traits\ObjectResolver;
 
 class ApiClient
 {
+    use ObjectResolver;
+
     /**
      * @var array HTTP request headers of the HTTP request
      */
@@ -26,9 +29,9 @@ class ApiClient
      * 
      * @param Configuration $configuration
      */
-    public function __construct(Configuration $configuration)
+    public function __construct(Configuration $configuration = null)
     {
-        $this->configuration = $configuration;
+        $this->configuration = $this->resolve($configuration, Configuration::class);
     }
 
     /**
