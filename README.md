@@ -90,7 +90,7 @@ All Classes are in `IntellirentSDK\Apis` namespace
 ## Running tests
 ```bash
 composer install
-./vendor/bin/phpunit --testdox tests
+./vendor/bin/phpunit tests
 ```
 ## Changelog
 _TODO_
